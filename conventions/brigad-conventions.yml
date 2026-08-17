@@ -1,0 +1,51 @@
+generated: '2026-08-17'
+method: derived
+source: graphql/brigad-talent.graphql, graphql/brigad-agent.graphql, graphql/brigad-legacy.graphql
+note: >-
+  Cross-cutting semantics derived from the captured GraphQL SDLs. Brigad
+  publishes no conventions documentation; these are observations of the schema
+  shape, not a provider-stated contract.
+protocol: graphql
+transport:
+  style: GraphQL over HTTP POST
+  content_type: application/json
+  endpoints:
+    talent: https://brigadhsp-router-talent-brigadhsp-prod.plat.euw1.prod.brigad.cloud/graphql
+    business: https://brigadhsp-router-agent-brigadhsp-prod.plat.euw1.prod.brigad.cloud/graphql
+    legacy: https://brigadhsp-router-legacy-brigadhsp-prod.plat.euw1.prod.brigad.cloud/graphql
+authentication:
+  style: end-user bearer session (see authentication/brigad-authentication.yml)
+  introspection: open-anonymous
+pagination:
+  style: none-relay
+  note: >-
+    No Relay Connection/PageInfo/edges/cursor types are present in any schema;
+    list queries return plain arrays (e.g. list-shaped Query fields), so there
+    is no cursor/offset pagination convention to document.
+idempotency:
+  supported: false
+  note: >-
+    No Idempotency-Key header/argument or idempotent-mutation convention is
+    present or documented. GraphQL mutations are not idempotency-keyed. No
+    Idempotency pointer is emitted.
+scalars:
+  library: graphql-scalars
+  note: >-
+    Schemas use the graphql-scalars vocabulary (DateTime, DateTimeISO, Date,
+    EmailAddress, CountryCode, CountryCodeAlpha2, Currency, PhoneNumber, GUID,
+    Cuid, BigInt, GeoJSON, ...) as custom scalar types.
+error_envelope:
+  style: graphql-errors
+  note: >-
+    Standard GraphQL top-level `errors[]` array alongside partial `data`; no
+    RFC 9457 problem+json (this is not a REST surface).
+versioning:
+  scheme: schema-partitioned
+  note: >-
+    Surface is partitioned by named router schema (talent / agent / legacy)
+    rather than by URI/header version.
+subscriptions:
+  supported: false
+rate_limit_signaling:
+  documented: false
+  note: See rate-limits/brigad-rate-limits.yml — undocumented.

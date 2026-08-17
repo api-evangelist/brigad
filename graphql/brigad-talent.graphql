@@ -1,0 +1,3161 @@
+# generated: '2026-08-17'
+# method: searched
+# source: https://brigadhsp-router-talent-brigadhsp-prod.plat.euw1.prod.brigad.cloud/graphql
+# note: Brigad first-party GraphQL router (talent schema) reachable from Brigad's own web app
+#   (app.hsp.brigad.co bundle). Anonymous introspection is OPEN; live SDL captured verbatim.
+#   Undocumented internal app backend, not a published developer API. Ownership: host is
+#   *.brigad.cloud and the endpoint is hardcoded in Brigad's own SPA JavaScript.
+
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+type AIProcessingError {
+  message: String!
+}
+
+type AccessError implements BaseError {
+  type: ErrorTypeEnum!
+  ressource: String!
+}
+
+type AccessRole {
+  updated_by: UpdatedBy
+}
+
+scalar AccountNumber
+
+type AccreditationInformations {
+  updated_by: UpdatedBy
+}
+
+enum AcquisitionGoalEnum {
+  FAST_GROWTH
+  GROW
+  SUSTAIN
+}
+
+union AddPublicExperienceResult = EditPublicExperienceSuccess | NeverWorkedWithBusinessError
+
+type Address {
+  id: UUID!
+  street: String!
+  city: String!
+  zip: String!
+  state: String!
+  country: String!
+  iso_country: CountryCode!
+  map_required: Boolean!
+  longitude: Float!
+  latitude: Float!
+  google_maps_place_id: String!
+  image_key: String
+  image_url: URL
+  updated_by: UpdatedBy
+}
+
+type Administrator {
+  updated_by: UpdatedBy
+}
+
+type AdministratorUpdatedBy {
+  user_id: UUID!
+}
+
+type AdministratorUser {
+  user_id: UUID!
+}
+
+type Agent {
+  id: UUID!
+  email: EmailAddress!
+}
+
+union AgentOrDeletedResource = Agent | DeletedResource
+
+type AgentRegularization implements RegularizationTemplate {
+  id: UUID!
+  created_at: DateTime!
+  updated_at: DateTime!
+  updated_by: UpdatedBy
+  expired_at: DateTime!
+  offer_id: UUID!
+  requester_type: UserTypeEnum!
+  requester_id: UUID!
+  responder_id: UUID
+  current_slot_ids: [UUID!]!
+  current_slots: [Slot!]!
+  new_slot_ids: [UUID!]!
+  new_slots: [Slot!]!
+  status: RegularizationStatusEnum!
+  requester_reason: String
+  responder_reason: String
+  impacted_slots: [SlotDetail!]!
+  validation_code: String!
+}
+
+type AgentUpdatedBy {
+  user_id: UUID!
+  _id: ID!
+  type: String!
+}
+
+type AgentUser {
+  user_id: UUID!
+}
+
+enum AiDecisionEnum {
+  VALIDATED
+  DISQUALIFIED
+}
+
+enum AiDecisionSkillsQuestionnaireStatusEnum {
+  FAILED
+  SUCCEEDED
+  NONE
+}
+
+enum AiDecisionTypeEnum {
+  LANGUAGE
+  INDUSTRIES
+  SKILLS
+}
+
+type AllStateDocument {
+  state: TalentDocumentsAllState!
+  last_uploaded_document: LastUploadedDocument
+}
+
+type AllStateDocumentRequirement {
+  state: TalentDocumentsAllState!
+}
+
+type AlreadyExistsError implements BaseError {
+  type: ErrorTypeEnum!
+  ressource: String!
+  identifiers: [String!]!
+}
+
+type ApplePassport {
+  id: UUID!
+  created_at: DateTime!
+  updated_at: DateTime!
+  name: PassportNameEnum!
+  data: ApplePassportData!
+  user_id: UUID!
+  updated_by: UpdatedBy
+}
+
+type ApplePassportData {
+  email: EmailAddress!
+  access_token: String
+  email_verified: Boolean!
+  aud: String!
+  sub: String!
+}
+
+input ApplePassportInput {
+  access_token: String!
+}
+
+union ApproveRegularizationResult = TalentRegularization | AgentRegularization | NotFoundError | InvalidCodeError
+
+enum AvailableAppEnum {
+  HLC
+  HSP
+}
+
+type AvailableJobsForSiteResult {
+  job: Job!
+  tags: [Tag!]!
+}
+
+type BadRequestError implements BaseError {
+  type: ErrorTypeEnum!
+  message: String!
+}
+
+type Badge {
+  updated_by: UpdatedBy
+}
+
+interface BaseError {
+  type: ErrorTypeEnum!
+}
+
+scalar BigInt
+
+interface BillingDataInformation {
+  id: UUID!
+  city: String!
+  company_active: CompanyActiveEnum!
+  company_reference: String
+  country: CountryCode!
+  created_at: DateTime!
+  invoice_number_prefix: Int!
+  name: String!
+  status_reasons: [BillingDataStatusReasonsEnum!]!
+  status: BillingDataStatusesEnum!
+  street: String!
+  updated_at: DateTime!
+  vat_reference: String
+  zip: String!
+  suggested_name: String
+}
+
+enum BillingDataStatusReasonsEnum {
+  MISSING_COMPANY_REFERENCE
+  INVALID_COMPANY_REFERENCE
+  INACTIVE_COMPANY
+  NAME_MISMATCH
+  CATEGORY_MISMATCH
+  VAT_REFERENCE_MISMATCH
+  MISSING_PROOF_OF_COMPANY
+  EXPIRED_PROOF_OF_COMPANY
+}
+
+enum BillingDataStatusesEnum {
+  VALID
+  FAILED
+  UNKNOWN
+}
+
+type Branch {
+  id: UUID!
+  name: String!
+  parent_id: UUID!
+}
+
+type BrigadModelVideo {
+  id: UUID!
+  category: BrigadModelVideosCategoryEnum!
+  language: Locale!
+  title: TranslationsDictionary!
+  video_url: URL!
+  index: Int!
+  watched: Boolean!
+  targets: [ContractTypeEnum!]!
+}
+
+enum BrigadModelVideosCategoryEnum {
+  MODEL
+  COMMITMENTS
+}
+
+input BrigadModelVideosForRegistrantInput {
+  language: Locale
+  category: BrigadModelVideosCategoryEnum
+  targets: [ContractTypeEnum!]
+}
+
+union BrigadUser = AdministratorUser | TalentUser | RegistrantUser | AgentUser | SystemUser | DeletedUser
+
+type BrigaderUpdatedBy {
+  user_id: UUID!
+  _id: ID!
+  type: String!
+}
+
+type BusinessConfiguration {
+  _id: ID!
+  business_entity_id: UUID!
+  custom_form_url_to_fill_before_mission_acceptance: String
+  needs_talents_to_attest_not_employee: Boolean
+}
+
+union BusinessEntityOrDeletedResource = Group | Branch | Site | DeletedResource
+
+enum BusinessEntityTypeEnum {
+  GROUP
+  BRANCH
+  SITE
+  PAYMENT_CORPORATION
+}
+
+enum BusinessGroupAccountTypeEnum {
+  REGULAR
+  KEY_ACCOUNT
+}
+
+enum BusinessPlan {
+  ESSENTIAL
+  GROUP
+}
+
+type BusinessPricingConfiguration {
+  id: UUID!
+  business_commission_reduction_rate: Float
+  collective_convention: CollectiveConventionEnum
+  seniority_bonus_required_documents: [SeniorityBonusDocumentRequiredEnum!]!
+}
+
+type BusinessRelationsWithTalent {
+  _id: ID!
+  talent_id: UUID!
+  business_entity_id: UUID!
+  not_employee: Boolean
+  last_update_not_employee: DateTime
+  custom_form_check_submission_date: DateTime
+}
+
+scalar Byte
+
+type CalendarEvent {
+  _id: ID!
+  event_id: String!
+  user_id: String!
+  start_date: DateTime!
+  start_timezone: Timezone
+  end_date: DateTime!
+  end_timezone: Timezone
+  location: String
+}
+
+enum CandidateStageEnum {
+  CREATED
+  HIRED
+  DISQUALIFIED
+  OFFER
+  FEEDBACK
+  INTERVIEWING
+  APPLIED
+  SCHEDULE_INTERVIEW
+  SCHEDULE_PHONE_SCREEN
+  SOURCED
+  REFERRAL
+  RECRUITER
+  OTHER
+  UNKNOWN
+  REGISTERED
+}
+
+enum CandidateStageNameEnum {
+  UNKNOWN
+  APPLIED
+  TO_CALL
+  CALL_BOOKED
+  WFD
+  WFD_NO_ANSWER
+  WFD_NEVER_ANSWERED
+  CHECK_DOCUMENT
+  VALIDATED
+  CANDIDATE_VALIDATED
+  BLK_NO_ANSWER
+  BLK_NEVER_ANSWERED
+  BLK_NOT_AVAILABLE_TO_TALK
+  BLK_NEED_MORE_INFOS
+  BLK_INVALID_INFO
+  BLK_CALL_NEVER_BOOKED
+  BLK_CALL_TO_BOOK
+  BLK_JOB_NOT_SUPPORTED
+  BLK_ONBOARDING_IN_STANDBY
+  BLK_WAITING_FOR_VALIDATION
+  BLK_OUT_OF_ZONE
+  RFS_UNINTERESTED
+  RFS_CV_NOT_CONVINCING
+  RFS_CALL_NOT_CONVINCING
+  RFS_STATUS_NOT_PERMITTED
+  RFS_NOT_ELIGIBLE_TO_WORK
+  RFS_UNQUALIFIED
+  CREATED
+  TO_ACTIVATE
+  ACTIVATED
+  OLD_STAGE_NAME
+}
+
+type CandidateUpdatedBy {
+  user_id: UUID!
+  _id: ID!
+  type: String!
+}
+
+type Category {
+  updated_by: UpdatedBy
+}
+
+type Certificate {
+  id: UUID!
+  name: String!
+  description: TranslationsDictionary!
+  document_type_related: DocumentType!
+  level: Int!
+  is_optional: Boolean!
+}
+
+type CertificateDocument {
+  job_id: UUID!
+  possible_types: [CertificateDocumentType!]!
+  possible_types_certificates: [Certificate!]!
+  _id: ID!
+  state: TalentDocumentsMandatoryState!
+  last_uploaded_document: LastUploadedDocument
+  job: Job!
+}
+
+union CertificateDocumentRequirement = RequiredCertificateDocumentRequirement | NotNeededCertificateDocumentRequirement
+
+enum CertificateDocumentType {
+  DEI
+  IFSI
+  DEAS
+  DPAS
+  CAFAS
+  CAFAP
+  CAT
+  DEAP
+  DPAP
+  DEAED
+  CAFAMP
+  TPADVF
+  BAC_PRO_ASSP
+  CAFAES
+  DEAES
+  DEAMP
+  DEAVS
+  DEES
+  DEME
+  CAFAD
+  BEP_ASSP
+  BEP_CSS
+  BAC_PRO_SAPAT
+}
+
+type ChangedSlot {
+  id: UUID!
+  new: UUID!
+}
+
+type ClientsHasNotTheSameProviderError {
+  client_ids: [UUID!]!
+  provider_ids: [UUID!]!
+}
+
+type CollectiveConvention {
+  id: UUID!
+  type: CollectiveConventionEnum!
+  job_id: UUID!
+  seniority_bonus_percentages: [SeniorityBonusPercentage!]!
+}
+
+enum CollectiveConventionEnum {
+  CCN_1951
+  CCN_1966
+  CCN_1996
+  CCN_2002
+  CCN_2010
+  CCN_2022
+}
+
+union CollectiveConventionOrNotFound = CollectiveConvention | NotFoundError
+
+type CommitmentBonus {
+  rate: Float!
+  amount_excl_tax: Int!
+}
+
+enum CompanyActiveEnum {
+  ACTIVE
+  INACTIVE
+  UNKNOWN
+}
+
+type CompanyInactiveError {
+  reason: String!
+}
+
+enum CompanyInfoAvailableEnum {
+  AVAILABLE
+  PARTIALLY_AVAILABLE
+  UNAVAILABLE
+  UNKNOWN
+}
+
+enum CompanyNameMatchEnum {
+  MATCH
+  MISMATCH
+  UNKNOWN
+}
+
+enum CompanyNumberValidityEnum {
+  INVALID
+  PRIVATE
+  FREELANCE
+  LINKED_TO_PAYMENT_METHOD_EXEMPTED_FOR_LAUNCH_MISSION
+  LINKED_TO_UNPAID_MISSIONS
+  VALID
+  UNABLE_TO_CHECK_WITH_PROVIDER
+}
+
+type CompanyReferenceAlreadyUsedError {
+  company_reference_already_used: String!
+}
+
+type CompletedBrigader {
+  updated_by: UpdatedBy
+}
+
+type Connector {
+  id: UUID!
+  mission: Mission!
+}
+
+scalar ContentType
+
+enum ContractTypeEnum {
+  FREELANCE
+  TEMPORARY
+  INTERIM
+  CDDU
+}
+
+type CountTalentOffers {
+  accepted_ongoing: Int!
+  accepted_incoming: Int!
+  done_uninvoiced: Int!
+  staffed: Int!
+  done: Int!
+}
+
+type Country {
+  id: UUID!
+  created_at: DateTime!
+  updated_at: DateTime!
+  name: CountryCode!
+  onboarding_available_verticals: [VerticalEnum!]!
+  updated_by: UpdatedBy
+}
+
+scalar CountryCode
+
+scalar CountryCodeAlpha2
+
+scalar CountryName
+
+input CreateDeviceInput {
+  token: String!
+  push_enabled: Boolean!
+}
+
+input CreateRegistrantExperienceInput {
+  job_id: UUID!
+  start_date: String!
+  end_date: String
+  business_name: String!
+  business_city: String!
+  site_typology_ids: [UUID!]!
+  healthcare_service_ids: [UUID!]!
+  description: String
+}
+
+type CreateRegistrantExperiencesVideosQuestions {
+  questions: [RegistrantExperienceVideo!]!
+}
+
+type CreateRegistrantExperiencesVideosQuestionsError {
+  error_key: CreateRegistrantExperiencesVideosQuestionsErrorEnum!
+}
+
+enum CreateRegistrantExperiencesVideosQuestionsErrorEnum {
+  REGISTRANT_NOT_FOUND
+  VERTICAL_NOT_FOUND
+  EXPERIENCES_VIDEOS_QUESTIONS_ALREADY_EXISTS
+}
+
+union CreateRegistrantExperiencesVideosQuestionsResult = CreateRegistrantExperiencesVideosQuestions | CreateRegistrantExperiencesVideosQuestionsError
+
+union CreateRegularizationResult = TalentRegularization | AgentRegularization | NotFoundError | RegularizationError
+
+input CreateSessionInput {
+  device_type: SessionDeviceTypeEnum!
+  device: CreateDeviceInput
+  version: String
+  user_agent: String
+  readonly: Boolean
+  tracking_ids: JSON
+}
+
+input CreateTalentBillingDataInput {
+  name: String!
+  freelance: Boolean!
+  street: String!
+  city: String!
+  zip: String!
+  country: CountryCode!
+  company_reference: String
+  vat_reference: String
+}
+
+union CreateTalentBillingDataResult = TalentBillingData | NotFoundError | CompanyInactiveError | CompanyReferenceAlreadyUsedError
+
+input CreateTalentCareerExperienceInput {
+  job_id: UUID!
+  start_date: String!
+  end_date: String
+  business_name: String!
+  business_city: String!
+  site_typology_ids: [UUID!]!
+  healthcare_service_ids: [UUID!]!
+  description: String
+}
+
+type CreateUserResult {
+  user: User!
+  passport: Passport!
+  token: String!
+}
+
+input CreateUserWithAppleInput {
+  data: ApplePassportInput!
+  session: CreateSessionInput!
+  user_consents: [UserConsentAgreementEnum!]
+}
+
+input CreateUserWithGoogleInput {
+  data: GooglePassportInput!
+  session: CreateSessionInput!
+  user_consents: [UserConsentAgreementEnum!]
+}
+
+input CreateUserWithPasswordInput {
+  data: PasswordPassportInput!
+  session: CreateSessionInput!
+  user_consents: [UserConsentAgreementEnum!]
+}
+
+input CreateUserWithPhoneNumberInput {
+  data: PhoneNumberPassportInput!
+  session: CreateSessionInput!
+  user_consents: [UserConsentAgreementEnum!]
+}
+
+input CreateUserWithTokenInput {
+  data: TokenPassportCreationInput!
+  session: CreateSessionInput!
+  user_consents: [UserConsentAgreementEnum!]
+}
+
+type CriminalRecordDocumentRequirement {
+  state: TalentDocumentsNotMandatoryState!
+}
+
+scalar Cuid
+
+scalar Currency
+
+type DBSCustomFormCheckInformation {
+  reference_one_date: Date
+  reference_two_date: Date
+}
+
+scalar DID
+
+scalar Date
+
+input DateInterval {
+  start: DateTime
+  start_date: String
+  start_time: String
+  end: DateTime
+  end_date: String
+  end_time: String
+}
+
+scalar DateTime
+
+scalar DateTimeISO
+
+input DateTimeInterval {
+  start: DateTime
+  end: DateTime
+}
+
+type DeleteRegistrant {
+  success: Boolean!
+}
+
+union DeleteRegistrantResult = DeleteRegistrant | NotFoundError
+
+type DeletedResource {
+  _id: ID!
+  id: UUID!
+}
+
+type DeletedUser {
+  user_id: UUID!
+}
+
+type Device {
+  _id: ID!
+  token: String!
+  number_of_errors: Int!
+  created_at: DateTime!
+  updated_at: DateTime!
+  push_enabled: Boolean!
+  updated_by: UpdatedBy
+}
+
+scalar DeweyDecimal
+
+type Dictionary {
+  updated_by: UpdatedBy
+}
+
+enum DictionaryTypeEnum {
+  DESISTEMENT_REASON
+  CANCELLATION_REASON
+  EXPIRATION_REASON
+  UNAVAILABILITY_REASON
+  VOUCHER_REASON
+  BUSINESS_SEGMENT
+  JOB_HARD_SKILL
+  PROFESSIONALISM_FEEDBACK
+  MANAGEMENT_FEEDBACK
+  WORK_CONDITIONS_FEEDBACK
+  MISSIONS_FEEDBACK
+  ZENDESK_TICKET_THEME
+  BRIGADER_SAFETY_ISSUE
+  BUSINESS_SAFETY_ISSUE
+  SUSPENSION_REASON
+  UNSUSPENSION_REASON
+  DEFAULT_BRANCH_CHILDREN_TYPE_NAME
+  MISSION_VALIDATION_REASON
+}
+
+type DisabledJob {
+  origin: DisabledJobOrigin!
+  disabled_until: DateTime
+  job: Job!
+}
+
+enum DisabledJobOrigin {
+  FAILED_SKILLS_QUESTIONNAIRE
+  FAILED_LOWER_SKILLS_QUESTIONNAIRE
+}
+
+type Disqualification {
+  created_at: DateTime!
+  updated_at: DateTime!
+  id: UUID!
+  registrant_origin_id: UUID!
+  type: DisqualificationTypeEnum!
+  phone_number: PhoneNumber!
+  email: EmailAddress!
+  disqualified_at: DateTime!
+  expires_at: DateTime
+}
+
+enum DisqualificationTypeEnum {
+  DISQUALIFIED_REGISTRANT_DUPLICATE_ACCOUNT
+  DIPLOMA_FRAUD
+  DOCUMENT_FRAUD
+  NOT_ALLOWED_TO_WORK_AS_SELF_EMPLOYED
+  LACK_OF_EXPERIENCE
+  LACK_OF_SOFT_SKILLS
+  LANGUAGE_LEVEL
+  MISBEHAVIOUR
+  JOBS_CUTS
+  PERMABANNED_ACCOUNT
+  EQUIPMENT
+  OTHER
+}
+
+type Document {
+  id: UUID!
+  type: DocumentTypeEnum!
+  files: [DocumentFile!]!
+}
+
+enum DocumentCategories {
+  ID
+  PROOF_OF_ADDRESS
+  CV
+  PROOF_OF_COMPANY
+  SELFIE
+  SHARE_CODE
+  OTHER
+  CERTIFICATE
+  BANKING_INFORMATION
+  SOCIAL_SECURITY_PROOF
+  SELFIE_AND_PROFILE_PICTURE_COMPARISON
+  FRENCH_BILLING_DATA_CERTIFICATE
+  FOOD_SAFETY_CERTIFICATE
+  WORK_CERTIFICATES
+  RPPS
+  CRIMINAL_RECORD
+}
+
+type DocumentFile {
+  id: UUID!
+  document_id: UUID!
+  key: String!
+  provider: FileProvider!
+  url: LinkUrlOrRedacted!
+}
+
+enum DocumentProviderOrigin {
+  STRIPE
+  BRIGAD
+  SERVICE_BRIGADERS
+  SERVICE_INVOICES
+  SERVICE_TALENTS_ONBOARDING
+  TEMPORARY_CONTRACT_MISSIONS
+  ADDITIONAL_SHORT_TERM_CONTRACT_MISSIONS
+  NURSE_JOB
+  ALL_HEATHCARE_JOB
+}
+
+enum DocumentSignatureStatusEnum {
+  ALL_GOOD
+  WAITING_FOR_AGENT
+  WAITING_FOR_TALENT
+  WAITING_FOR_BOTH
+}
+
+enum DocumentStatusEnum {
+  PENDING
+  FAILED
+  VALIDATED
+}
+
+enum DocumentType {
+  DRIVERS_LICENSE
+  IDENTITY_CARD
+  RESIDENCE_PERMIT
+  PASSPORT
+  PROOF_OF_ADDRESS
+  PROOF_OF_COMPANY
+  OTHER
+  CERTIFICATE
+  SELFIE
+  SHARE_CODE
+  BANKING_INFORMATION
+  SOCIAL_SECURITY_PROOF
+  SELFIE_AND_PROFILE_PICTURE_COMPARISON
+  CV
+  FRENCH_BILLING_DATA_CERTIFICATE
+  FOOD_SAFETY_CERTIFICATE
+  WORK_CERTIFICATES
+  RPPS
+  CRIMINAL_RECORD
+}
+
+enum DocumentTypeEnum {
+  DRIVERS_LICENSE
+  IDENTITY_CARD
+  RESIDENCE_PERMIT
+  PASSPORT
+  PROOF_OF_ADDRESS
+  PROOF_OF_COMPANY
+  OTHER
+  CERTIFICATE
+  SELFIE
+  SHARE_CODE
+  BANKING_INFORMATION
+  SOCIAL_SECURITY_PROOF
+  SELFIE_AND_PROFILE_PICTURE_COMPARISON
+  CV
+  FRENCH_BILLING_DATA_CERTIFICATE
+  FOOD_SAFETY_CERTIFICATE
+  WORK_CERTIFICATES
+  RPPS
+  CRIMINAL_RECORD
+}
+
+type DocumentsNeeded {
+  created_at: DateTime!
+  updated_at: DateTime!
+  owner_id: UUID!
+  documents: [DocumentTypeEnum!]!
+  needed_by: DocumentProviderOrigin!
+}
+
+enum DpaeStatusEnum {
+  NON_APPLICABLE
+  NEED_GENERATION
+  SUBMITTED
+}
+
+scalar Duration
+
+type EditPublicExperienceSuccess {
+  new_chosen_experiences: [PublicProfileExperience!]!
+}
+
+union EditPublicExperiencesResult = EditPublicExperienceSuccess | NeverWorkedWithBusinessError
+
+input EditRegistrantExperienceInput {
+  job_id: UUID
+  start_date: String
+  end_date: String
+  business_name: String
+  business_city: String
+  site_typology_ids: [UUID!]
+  healthcare_service_ids: [UUID!]
+  description: String
+}
+
+union EditRegistrantExperienceResult = RegistrantExperience | NotFoundError
+
+input EditRegularizationInput {
+  reason: String
+  impacted_slots: [ImpactedSlots!]
+  agent_id_to_notify: UUID
+}
+
+union EditRegularizationResult = TalentRegularization | AgentRegularization | NotFoundError | InvalidResourceStateError
+
+input EditSessionInput {
+  device_type: SessionDeviceTypeEnum
+  device: CreateDeviceInput
+  version: String
+  user_agent: String
+  tracking_ids: JSON
+}
+
+input EditTalentCareerExperienceInput {
+  job_id: UUID
+  start_date: String
+  end_date: String
+  business_name: String
+  business_city: String
+  site_typology_ids: [UUID!]
+  healthcare_service_ids: [UUID!]
+  description: String
+}
+
+union EditTalentCareerExperienceResult = TalentCareerExperience | NotFoundError
+
+input EditTalentInput {
+  presentation: String
+}
+
+input EditTalentPublicProfileConfigurationInput {
+  is_activated: Boolean!
+}
+
+scalar EmailAddress
+
+enum EntityTypeEnum {
+  GROUP
+  BRANCH
+  SITE
+  PAYMENT_CORPORATION
+}
+
+type Equipment {
+  id: UUID!
+  name: TranslationsDictionary!
+  updated_by: UpdatedBy
+}
+
+enum ErrorTypeEnum {
+  NOT_FOUND
+  BASE_ERROR
+  ALREADY_EXISTS
+  USER_INPUT_ERROR
+  ACCESS_ERROR
+}
+
+type ExperiencesVideoQuestion {
+  id: UUID!
+  video_url: URL
+  index: Int!
+  title: TranslationsDictionary!
+  description: TranslationsDictionary
+}
+
+type ExpiredCodeError {
+  message: String!
+}
+
+type ExpiredPropositionError {
+  short_id: String!
+}
+
+enum ExternalContactStatusEnum {
+  PENDING
+  VALIDATED
+}
+
+enum ExtractFileTypeEnum {
+  INVOICE
+  CONTRACT
+  SUMMARY
+  DOCUMENT
+  SHORT_TERM_CONTRACT
+}
+
+enum ExtractStatusEnum {
+  FAIL
+  CREATING_ARCHIVE
+  DONE
+}
+
+enum FCMNotificationTypeEnum {
+  NAVIGATE
+}
+
+enum FieldErrorEnum {
+  NOT_FOUND
+  ALREADY_USED
+  WRONG_COMBINATION
+  NOT_AUTHORIZED
+  SHOULD_NOT_BE_EMPTY
+  NOT_SUPPORTED
+}
+
+enum FileExtractTypeEnum {
+  INVOICES_PAYMENT_CORP
+  LEGAL_DOCUMENTS_BUSINESS
+  INVOICES_BUSINESS
+  INVOICES_BUSINESS_ADMIN
+  INVOICES_TALENT
+  INVOICES_TALENT_ADMIN
+  ONLY_ZIP_INVOICES_BUSINESS_ADMIN
+}
+
+enum FileKind {
+  FRONT
+  BACK
+}
+
+enum FileProvider {
+  AWS
+  PERSONA
+}
+
+type FixedTermMissionSalaryGrid {
+  business_entity_id: UUID!
+  job_id: UUID!
+  seniority_bonus_required_documents: [SeniorityBonusDocumentRequiredEnum!]!
+  collective_convention: CollectiveConventionEnum
+}
+
+type FixedTermSalaryDetails {
+  conventional_salary: Int!
+}
+
+union FoodSafetyCertificateDocument = FoodSafetyCertificateDocumentNeeded | FoodSafetyCertificateDocumentNotNeeded
+
+type FoodSafetyCertificateDocumentNeeded {
+  state: TalentDocumentsAllState!
+  level: UkFoodSafetyCertificateLevel!
+  job_id: UUID!
+  job: Job!
+  last_uploaded_document: LastUploadedDocument
+}
+
+type FoodSafetyCertificateDocumentNotNeeded {
+  state: TalentDocumentsNotMandatoryState!
+  last_uploaded_document: LastUploadedDocument
+}
+
+union FoodSafetyCertificateDocumentRequirement = NeededFoodSafetyCertificateDocumentRequirement | NotNeededFoodSafetyCertificateDocumentRequirement
+
+type FormattedDate {
+  date: String!
+  date_french_format: String!
+  year: String!
+  month: String!
+  day: String!
+  time: String!
+  hour: String!
+  minute: String!
+  second: String!
+  timezone: Timezone!
+  iso: String!
+  timestamp: Int!
+  utc_timestamp: Int!
+  formatted: TranslationsDictionary!
+  day_of_week: TranslationsDictionary!
+}
+
+scalar GUID
+
+scalar GeoJSON
+
+scalar Geometry
+
+type GooglePassport {
+  id: UUID!
+  created_at: DateTime!
+  updated_at: DateTime!
+  name: PassportNameEnum!
+  data: GooglePassportData!
+  user_id: UUID!
+  updated_by: UpdatedBy
+}
+
+type GooglePassportData {
+  id: String!
+  email: EmailAddress!
+  name: String
+  locale: String
+  picture: String
+  given_name: String
+  family_name: String
+  access_token: String!
+  verified_email: Boolean
+}
+
+input GooglePassportInput {
+  access_token: String!
+}
+
+type Group {
+  id: UUID!
+  name: String!
+}
+
+enum GroupInvitationStatusEnum {
+  PENDING
+  PENDING_VALIDATION
+  ACCEPTED
+  CANCELED
+  FAILED
+}
+
+type GroupJobName {
+  id: UUID!
+  name: TranslationsDictionary!
+  freelance_job_id: UUID
+  short_term_job_id: UUID
+}
+
+enum GroupVerticalEnum {
+  HOSPITALITY
+  HEALTHCARE
+  CONTRACT_CATERING
+  MEDICO_SOCIAL
+  SANITARY
+  CITY_MEDECINE
+  HOME_ASSISTANCE
+}
+
+type HACCPQuestionnaire {
+  id: UUID!
+  job: Job!
+  applicable_for_jobs: [Job!]!
+  status: HACCPQuestionnaireStatusEnum!
+  minimum_valid_answers: Int!
+  questions: [HACCPQuestionnaireQuestion!]!
+}
+
+type HACCPQuestionnaireAnswer {
+  id: UUID!
+  answers_indexes: [Int!]
+  answered: Boolean!
+  timeout: Boolean
+  start_time: DateTime
+  end_time: DateTime
+}
+
+input HACCPQuestionnaireAnswerInput {
+  answers_indexes: [Int!]
+  start_time: DateTime
+  end_time: DateTime
+  timeout: Boolean
+}
+
+type HACCPQuestionnaireQuestion {
+  id: UUID!
+  job_id: UUID!
+  title: TranslationsDictionary!
+  subtitle: TranslationsDictionary
+  index: Int!
+  choices: [TranslationsDictionary!]!
+  valid_answer_indexes: [Int!]!
+  answer: HACCPQuestionnaireAnswer!
+}
+
+enum HACCPQuestionnaireStatusEnum {
+  NOT_STARTED
+  IN_PROGRESS
+  FAILED
+  SUCCEEDED
+}
+
+scalar HSL
+
+scalar HSLA
+
+type HealthcareService {
+  id: UUID!
+  custom_question_title: TranslationsDictionary
+  custom_question_subtitle: TranslationsDictionary
+  name: TranslationsDictionary!
+  minimum_experience_required_in_months: Int!
+  level: Int!
+  linked_site_typology_ids: [UUID!]!
+  linked_site_typologies: [SiteTypology!]
+  children: [HealthcareService!]!
+  group_name: TranslationsDictionary
+}
+
+type HealthcareServiceByJob {
+  job: Job!
+  healthcare_service_ids: [UUID!]
+}
+
+scalar HexColorCode
+
+scalar Hexadecimal
+
+enum HospitalityJobTypeEnum {
+  FRONT_OF_HOUSE
+  BACK_OF_HOUSE
+  OTHER
+}
+
+scalar IBAN
+
+scalar IP
+
+scalar IPCPatent
+
+scalar IPv4
+
+scalar IPv6
+
+scalar ISBN
+
+scalar ISO8601Duration
+
+type IdentificationDocument {
+  state: TalentDocumentsMandatoryState!
+  last_uploaded_document: LastUploadedDocument
+  possible_types: [IdentificationDocumentType!]!
+}
+
+type IdentificationDocumentRequirement {
+  state: TalentDocumentsMandatoryState!
+  possible_types: [IdentificationDocumentType!]!
+}
+
+enum IdentificationDocumentType {
+  IDENTITY_CARD
+  PASSPORT
+  DRIVERS_LICENSE
+  RESIDENCE_PERMIT
+}
+
+input ImpactedSlots {
+  id: UUID!
+  is_valid: Boolean!
+  new_slot: OfferSlotsInput
+}
+
+type Industry {
+  id: UUID!
+  name: TranslationsDictionary!
+  vertical: VerticalEnum!
+  updated_by: UpdatedBy
+}
+
+type IndustryMissionsStats {
+  industry: Industry!
+  count: Int!
+  worked_minutes: Int!
+  first_mission_started_at: Date!
+}
+
+type InvalidCodeError {
+  validation_code: String!
+}
+
+type InvalidResourceStateError implements BaseError {
+  type: ErrorTypeEnum!
+  ressource: String!
+  invalid_key: String!
+  expected_values: [String!]!
+  current_value: String!
+  identifier: String
+}
+
+enum InvoiceRecipientChannelEnum {
+  EMAIL
+}
+
+enum InvoiceRecipientFrequencyEnum {
+  WEEKLY
+  MONTHLY
+  ON_EVENT
+}
+
+enum InvoiceTypeEnum {
+  CANCELLATION_FEE
+  CANCELLATION_FEE_COMMISSION
+  BRIGAD_CANCELLATION_FEE
+  CLIENT
+  COMMISSION
+  PREFERENTIAL_PAYMENT_FEE
+  BUSINESS_COMMISSION
+  CANCELLATION_FEE_BUSINESS_COMMISSION
+  MONTHLY_BUSINESS_COMMISSION
+  SHORT_TERM_MONTHLY_BUSINESS_COMMISSION
+  SHORT_TERM_MONTHLY_CANCELLATION_BUSINESS_COMMISSION
+  REBATE
+}
+
+enum InvoiceTypeForBusinessExtractionEnum {
+  CANCELLATION_FEE
+  CANCELLATION_FEE_BUSINESS_COMMISSION
+  CLIENT
+  BUSINESS_COMMISSION
+  MONTHLY_BUSINESS_COMMISSION
+  SHORT_TERM_MONTHLY_BUSINESS_COMMISSION
+  SHORT_TERM_MONTHLY_CANCELLATION_BUSINESS_COMMISSION
+  PREFERENTIAL_PAYMENT_FEE
+  REBATE
+}
+
+enum InvoiceTypeForExtractionEnum {
+  CANCELLATION_FEE
+  CANCELLATION_FEE_COMMISSION
+  BRIGAD_CANCELLATION_FEE
+  CLIENT
+  COMMISSION
+  PREFERENTIAL_PAYMENT_FEE
+}
+
+type InvoicedGmvDetailsByMonth {
+  payment_received: Int!
+  vat_amount: Int!
+  service_fees: Int!
+  month: String!
+  currency: String!
+}
+
+input InvoicedGmvDetailsByMonthPeriodInput {
+  from: Date!
+  to: Date!
+}
+
+scalar JSON
+
+scalar JSONObject
+
+scalar JWT
+
+type Job {
+  id: UUID!
+  certificate_ids: [UUID!]!
+  certificates: [Certificate!]!
+  generic_name: TranslationsDictionary
+  name: TranslationsDictionary!
+  country: String!
+  iso_country_alpha_2: CountryCodeAlpha2!
+  hard_skill_ids: [UUID!]!
+  skill_level: JobSkillLevel
+  vertical: VerticalEnum
+  description: TranslationsDictionary
+  contract_type: ContractTypeEnum!
+  updated_by: UpdatedBy
+}
+
+type JobAvailability {
+  enabled_jobs: [Job!]!
+  closed_jobs: [Job!]!
+  disabled_jobs: [DisabledJob!]!
+}
+
+enum JobSkillLevel {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+scalar LCCSubclass
+
+enum LanguageEnum {
+  FR_FR
+  EN_GB
+}
+
+type LastUploadedDocument {
+  id: UUID!
+  document: Document!
+}
+
+scalar Latitude
+
+type Link {
+  url: String!
+}
+
+union LinkUrlOrRedacted = Link | Redacted
+
+scalar LocalDate
+
+scalar LocalDateTime
+
+scalar LocalEndTime
+
+scalar LocalTime
+
+scalar Locale
+
+scalar Long
+
+scalar Longitude
+
+scalar MAC
+
+type MandatoryDocument {
+  state: TalentDocumentsMandatoryState!
+  last_uploaded_document: LastUploadedDocument
+}
+
+type MandatoryDocumentRequirement {
+  state: TalentDocumentsMandatoryState!
+}
+
+type MatchmakingSlot {
+  starts_at: DateTime!
+  ends_at: DateTime!
+  break_minutes: Int!
+  starts_at_formatted: FormattedDate!
+  start_date: String!
+  start_time: String!
+  ends_at_formatted: FormattedDate!
+  end_date: String!
+  end_time: String!
+}
+
+input MatchmakingSlotInput {
+  start_date: String!
+  end_date: String!
+  start_time: String!
+  end_time: String!
+  break_minutes: Int!
+}
+
+enum MetadataScopeEnum {
+  COUNTRY
+  ZONE
+}
+
+type Mission {
+  id: UUID!
+  creator_id: UUID!
+  creator: AgentOrDeletedResource!
+  multiple_talent_connection_confirmation: Boolean!
+  regularizations: [Regularization!]!
+  pending_regularization: Regularization
+}
+
+enum MissionOriginTypeEnum {
+  TRADITIONAL_AGENT_CREATION
+  BRIGADER_OFFER_REQUEST
+  TALENT_NETWORK_CALENDAR
+}
+
+enum MissionPaymentMethodEnum {
+  NORMAL
+  EXEMPTED
+  EXEMPTED_FOR_LAUNCH
+}
+
+enum MissionSourceEnum {
+  CREATION
+  SPLIT
+  DUPLICATION
+}
+
+enum MissionStatusEnum {
+  PENDING_VALIDATION
+  REFUSED_VALIDATION
+  INSEARCH
+  EXPIRED
+  CANCELED
+  ACCEPTED
+  DONE
+  PENDING_CONNECTION_CONFIRMATION
+}
+
+enum MissionValidationMechanismEnum {
+  MANUAL
+  AUTOMATIC_PENDING
+  AUTOMATIC
+}
+
+union ModerationResult = ModerationResultDetails | UserInputError | AIProcessingError
+
+type ModerationResultDetails {
+  text_parts: [ModerationTextPart!]!
+}
+
+type ModerationRules {
+  contains_inappropriate_word: Boolean!
+  contains_insults: Boolean!
+  contains_contact_info: Boolean!
+}
+
+type ModerationTextPart {
+  content: String!
+  broken_rules: ModerationRules
+}
+
+enum MonthEnum {
+  JANUARY
+  FEBRUARY
+  MARCH
+  APRIL
+  MAY
+  JUNE
+  JULY
+  AUGUST
+  SEPTEMBER
+  OCTOBER
+  NOVEMBER
+  DECEMBER
+}
+
+type Mutation {
+  editTalent(data: EditTalentInput!): TalentResult!
+  spellCheckPresentation(presentation: String!): SpellCheckPresentationResult!
+  editSiteTypologiesForTalent(site_typology_ids: [UUID!]!): TalentResult!
+  editSiteTypologiesByJobForTalent(job_id: UUID!, site_typology_ids: [UUID!]!): TalentResult!
+  editHealthcareServicesByJobForTalent(job_id: UUID!, healthcare_service_ids: [UUID!]!): TalentResult!
+  editHealthcareServicesForTalent(healthcare_service_ids: [UUID!]!): TalentResult!
+  switchTalentJobsToContractTypes(contract_types: [ContractTypeEnum!]!): TalentResult!
+  showInterestInRosk: Boolean!
+  createTalentHACCPQuestionnaire(job_id: UUID!): HACCPQuestionnaire
+  updateHACCPQuestionnaireAnswer(id: UUID!, data: HACCPQuestionnaireAnswerInput!): HACCPQuestionnaireQuestion
+  setupPublicProfileExperiences: TalentPublicProfileConfigurationResult!
+  editTalentPublicProfileConfiguration(input: EditTalentPublicProfileConfigurationInput!): TalentPublicProfileConfigurationResult!
+  addPublicExperience(site_id: UUID!): AddPublicExperienceResult!
+  removePublicExperience(site_id: UUID!): RemovePublicExperienceResult!
+  editPublicExperiences(site_ids: [UUID!]!): EditPublicExperiencesResult!
+  createTalentCareerExperience(input: CreateTalentCareerExperienceInput!): TalentCareerExperience!
+  editTalentCareerExperience(talent_career_experience_id: UUID!, input: EditTalentCareerExperienceInput!): EditTalentCareerExperienceResult!
+  deleteTalentCareerExperience(talent_career_experience_id: UUID!): Boolean!
+  deleteUserBlocklistEntry(site_id: UUID!): Boolean!
+  publicAcceptExternalContactInvitation(short_id: ID!): PublicExternalContactInvitationAnswerResult!
+  publicRefuseExternalContactInvitation(short_id: ID!): PublicExternalContactInvitationAnswerResult!
+  publicDeleteExternalContactForSite(external_contact_id: UUID!, site_id: UUID!): Boolean!
+  acceptNetworkInvitation(invitation_id: UUID!): Boolean!
+  refuseNetworkInvitation(invitation_id: UUID!): Boolean!
+  upsertBusinessRelationsWithTalents(business_entity_id: UUID!, input: UpsertBusinessRelationsWithTalentInput!): BusinessRelationsWithTalent!
+  submitCustomFormCheck(business_entity_id: UUID!): BusinessRelationsWithTalent!
+  dispatch(name: String!, data: JSON!): JSON
+  dispatchData(name: String!, data: JSON!): JSON
+  upsertDocumentsNeededForTemporaryContractMissions: Boolean!
+  createDocumentsNeeded(types: [DocumentTypeEnum!]!, needed_by: DocumentProviderOrigin!): DocumentsNeeded!
+  createS3LinkToUploadDocument(type: DocumentTypeEnum!): String!
+  createAndCheckRpps(rpps: String!): Boolean!
+  createS3LinkToUploadExperienceWorkCertificate(experience_id: UUID!, job_id: UUID): URL!
+  interestedToReceiveMoreMissionLike(proposition_hash: String!): TalentDocuments!
+  createTalentBillingData(data: CreateTalentBillingDataInput!): CreateTalentBillingDataResult!
+  publicAcceptMatchmakingExternalProposition(short_id: ID!): MutationPropositionResult!
+  publicRefuseMatchmakingExternalProposition(short_id: ID!): MutationPropositionResult!
+  refusePropositionsFromSite(site_id: UUID!, block_site: Boolean): [Proposition!]!
+  acceptProposition(hash: String!): PropositionOrNotFound!
+  refuseProposition(hash: String!, reason: PropositionRefusalReasonEnum, comment: String): PropositionOrNotFound!
+  seeProposition(hash: String!): PropositionOrNotFound!
+  showInterestForProposition(hash: String!): PropositionOrNotFound!
+  showPartialAvailabilityForProposition(hash: String!, available_slots: [SlotPairInput!]!): PropositionOrNotFound!
+  unanswerProposition(hash: String!): PropositionOrNotFound!
+  createRegularization(input: createRegularizationInput!): CreateRegularizationResult!
+  approveRegularization(id: UUID!, code: String!): ApproveRegularizationResult!
+  editRegularization(id: UUID!, input: EditRegularizationInput!): EditRegularizationResult!
+  setBrigadModelVideoWatched(video_id: UUID!): BrigadModelVideo!
+  editRPPSForRegistrant(rpps: String!): RPPSForRegistrantResult!
+  editSiteTypologiesForRegistrant(site_typology_ids: [UUID!]!): RegistrantResult!
+  editDeclaredCertificatesForRegistrant(declared_certificate_ids: [UUID!]!): RegistrantResult!
+  editHealthcareServicesForRegistrant(healthcare_service_ids: [UUID!]!): RegistrantResult!
+  setRegistrantReadyToBeValidated: RegistrantResult!
+  deleteRegistrant: DeleteRegistrantResult!
+  softResetRegistrant: RegistrantResult!
+  seeRegistrationFunnelScreen(screen: RegistrationFunnelScreenEnum!): Boolean!
+  setHasUploadedAllDocuments: Boolean!
+  updateRegistrantForNoCallValidation: RegistrantResult!
+  enableAccessToNeobAsCandidate: RegistrantResult!
+  createRegistrantExperiencesVideosQuestions: CreateRegistrantExperiencesVideosQuestionsResult!
+  resetRegistrantExperiencesVideosQuestions: Boolean!
+  syncAllQuestions: SyncAllQuestionsResult!
+  createRegistrantExperience(input: CreateRegistrantExperienceInput!): RegistrantExperience!
+  editRegistrantExperience(registrant_experience_id: UUID!, input: EditRegistrantExperienceInput!): EditRegistrantExperienceResult!
+  deleteRegistrantExperience(registrant_experience_id: UUID!): Boolean!
+  createRegistrantSkillsVerificationsQuestionnaires: [SkillsVerificationsQuestionnaire!]!
+  updateSkillsVerificationsAnswer(id: UUID!, data: SkillsVerificationsUpdateAnswerInput!): SkillsVerificationsQuestion!
+}
+
+union MutationPropositionResult = PublicMatchmakingProposition | ExpiredPropositionError | NotFoundError
+
+type NeedAtLeastOneRequirementError {
+  requirements: [String!]!
+}
+
+type NeededFoodSafetyCertificateDocumentRequirement {
+  state: TalentDocumentsAllState!
+  level: UkFoodSafetyCertificateLevel!
+}
+
+scalar NegativeFloat
+
+scalar NegativeInt
+
+type NetworkInvitation {
+  id: UUID!
+  phone_number: PhoneNumber!
+  email: EmailAddress!
+  first_name: String!
+  last_name: String!
+  type: NetworkTypeEnum!
+  skills: [NetworkInvitationSkill!]!
+  business_entity_id: UUID!
+  business_entity: BusinessEntityOrDeletedResource
+  status: NetworkInvitationStatusEnum!
+}
+
+type NetworkInvitationSkill {
+  job_id: UUID!
+  tag_ids: [UUID!]!
+}
+
+enum NetworkInvitationStatusEnum {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+enum NetworkTypeEnum {
+  EMPLOYEE
+  EXTERNAL_CONTACT
+}
+
+type NeverWorkedWithBusinessError {
+  site_id: UUID!
+}
+
+scalar NonEmptyString
+
+scalar NonNegativeFloat
+
+scalar NonNegativeInt
+
+scalar NonPositiveFloat
+
+scalar NonPositiveInt
+
+type NotFoundError implements BaseError {
+  type: ErrorTypeEnum!
+  ressource: String!
+  identifiers: [String!]!
+}
+
+type NotMandatoryDocument {
+  state: TalentDocumentsNotMandatoryState!
+  last_uploaded_document: LastUploadedDocument
+}
+
+type NotMandatoryDocumentRequirement {
+  state: TalentDocumentsNotMandatoryState!
+}
+
+type NotNeededCertificateDocumentRequirement {
+  state: TalentDocumentsNotNeededState!
+}
+
+type NotNeededFoodSafetyCertificateDocumentRequirement {
+  state: TalentDocumentsNotNeededState
+}
+
+type NumberOfPropositions {
+  seen: Int!
+  unseen: Int!
+  silent: Int!
+}
+
+scalar ObjectID
+
+enum OfferDocumentTypeEnum {
+  JUSTIFICATIVE
+  PURCHASE_ORDER
+  SHORT_TERM_CONTRACT
+}
+
+type OfferSlot {
+  start_date: String!
+  end_date: String!
+  start_time: String!
+  end_time: String!
+  break_minutes: Int!
+}
+
+input OfferSlotsInput {
+  start_date: String!
+  end_date: String!
+  start_time: String!
+  end_time: String!
+  break_minutes: Int!
+}
+
+enum OfferValidationMechanismEnum {
+  MANUAL
+  AUTOMATIC_PENDING
+  AUTOMATIC
+}
+
+type OnboardingFunnel {
+  _id: ID!
+  zone_id: UUID!
+  zone: Zone!
+  job_id: UUID!
+  job: Job!
+  calendly_url: URL!
+}
+
+union OnboardingJobsForRegistrantResult = JobAvailability | NotFoundError
+
+input PaginationInput {
+  limit: Int
+  offset: Int
+}
+
+enum ParkingAvailabilityEnum {
+  NO_PARKING
+  FREE_PARKING
+  PAID_PARKING
+}
+
+union Passport = PasswordPassport | GooglePassport | ApplePassport | TokenPassport | PhoneNumberPassport
+
+enum PassportNameEnum {
+  PASSWORD
+  GOOGLE
+  FACEBOOK
+  APPLE
+  TOKEN
+  PHONE_NUMBER
+}
+
+scalar Password
+
+type PasswordPassport {
+  id: UUID!
+  created_at: DateTime!
+  updated_at: DateTime!
+  name: PassportNameEnum!
+  data: GooglePassportData!
+  user_id: UUID!
+  updated_by: UpdatedBy
+}
+
+type PasswordPassportData {
+  bcrypt: String!
+}
+
+input PasswordPassportInput {
+  email: EmailAddress!
+  password: String!
+}
+
+enum PaymentStatusEnum {
+  PAID
+  OVERPAID
+  UNPAID
+}
+
+type PersonalChecksUploadedDocument {
+  _id: ID!
+  talent_id: UUID!
+  documents: [String!]!
+  uploaded_at: DateTime!
+}
+
+scalar PhoneNumber
+
+type PhoneNumberPassport {
+  id: UUID!
+  created_at: DateTime!
+  updated_at: DateTime!
+  name: PassportNameEnum!
+  data: PhoneNumberPassportData!
+  user_id: UUID!
+}
+
+type PhoneNumberPassportData {
+  phone_number: String!
+}
+
+input PhoneNumberPassportInput {
+  email: EmailAddress!
+  phone_number_token: String!
+}
+
+scalar Port
+
+scalar PositiveFloat
+
+scalar PositiveInt
+
+scalar PostalCode
+
+type PresentationSuggestion {
+  presentation: String!
+}
+
+union PresentationSuggestionResult = PresentationSuggestion | AIProcessingError
+
+type PreviewProposition {
+  _id: ID!
+  user_id: UUID!
+  hash: String!
+  distance: Float!
+  number_of_open_connectors: Int!
+  variant: Variant!
+}
+
+type Pricing {
+  mission_price_excl_tax: Int!
+  mission_hourly_price_excl_tax: Int!
+  mission_break_hourly_price_excl_tax: Int!
+  business_commission_rate_excl_tax: Float
+  mission_manual_price_coefficient: Float!
+  mission_minimum_price_by_slot: Int!
+  talent_possible_commission_rate: Float
+  commitment_bonus: CommitmentBonus
+  fixed_term_mission_salary_grid: FixedTermMissionSalaryGrid
+  fixed_term_salary_details: FixedTermSalaryDetails
+}
+
+type Product {
+  updated_by: UpdatedBy
+}
+
+enum ProofOfCompanyRequirementStatusEnum {
+  NOT_REQUIRED
+  REQUIRED
+  RECOMMENDED
+}
+
+type Proposition {
+  hash: String!
+  user_id: UUID!
+  variant: Variant!
+  events_conflicts: [CalendarEvent!]!
+  talent_documents_requirements: TalentDocumentsRequirements!
+  _id: ID!
+  seen_at: DateTime
+  answer: PropositionAnswerEnum!
+  status: PropositionStatusEnum!
+  silent: Boolean!
+  is_level_up_proposition: Boolean!
+  available_slots_utc: [SlotPair!]
+  available_slots: [SlotPair!]
+  expired_at: DateTime
+  distance: Float!
+  travel_time: TravelTime
+  mode: PropositionModeEnum!
+  refusal_reason: PropositionRefusalReasonEnum
+  connection_confirmation_enabled: Boolean!
+  number_of_open_connectors: Int!
+  already_connected_to_offer_id: UUID
+  is_user_whitelisted: Boolean!
+  number_of_whitelisted_users: Int!
+  auto_cancel_activated: Boolean!
+  answered_at: DateTime
+  partial_slot_indexes: [Int!]
+  for_neob: Boolean!
+  did_talent_cancel_last_mission_with_business: Boolean!
+}
+
+enum PropositionAnswerEnum {
+  UNANSWERED
+  ACCEPTED
+  REFUSED
+  INTERESTED
+  PARTIALLY_AVAILABLE
+}
+
+enum PropositionFrontStatusEnum {
+  REACHED
+  OPENED
+  ACCEPTED
+  REFUSED
+  INTERESTED
+  PARTIALLY_AVAILABLE
+}
+
+enum PropositionModeEnum {
+  REGULAR
+  PREFERRED
+  WHITELISTED
+  SUPER_BRIGADER
+  SUPER_TALENT
+  EXTERNAL
+  EXTERNAL_CONTACT
+  EMPLOYEE
+}
+
+union PropositionOrNotFound = Proposition | NotFoundError
+
+union PropositionOrNotFoundOrAccessError = Proposition | NotFoundError | AccessError
+
+enum PropositionRefusalReasonEnum {
+  UNWANTED_JOB
+  UNWANTED_SITE
+  TOO_FAR
+  PRICE_TOO_LOW
+  NOT_INTERESTED
+  OTHER_REASON
+}
+
+enum PropositionStatusEnum {
+  UNPROCESSED
+  SELECTED
+  EXPIRED
+  PROCESSED
+  CONFIRMED
+  AUTO_CONFIRMED
+  REFUSED
+  PENDING_CONNECTION_CONFIRMATION
+}
+
+enum ProviderDocumentVerificationDetailsEnum {
+  DOCUMENT_CORRUPT
+  DOCUMENT_FAILED_COPY
+  DOCUMENT_FAILED_GREYSCALE
+  DOCUMENT_INCOMPLETE
+  DOCUMENT_NOT_READABLE
+  DOCUMENT_NOT_UPLOADED
+  DOCUMENT_MISSING_BACK
+  DOCUMENT_MISSING_FRONT
+  DOCUMENT_TOO_LARGE
+  DOCUMENT_COUNTRY_NOT_SUPPORTED
+  DOCUMENT_INVALID
+  DOCUMENT_TYPE_NOT_SUPPORTED
+  DOCUMENT_FAILED_OTHER
+  DOCUMENT_NAME_MISMATCH
+  DOCUMENT_DOB_MISMATCH
+  DOCUMENT_ADDRESS_MISMATCH
+  DOCUMENT_ID_NUMBER_MISMATCH
+  DOCUMENT_EXPIRED
+  DOCUMENT_FRAUDULENT
+  DOCUMENT_ID_COUNTRY_NOT_SUPPORTED
+  DOCUMENT_ID_TYPE_NOT_SUPPORTED
+  DOCUMENT_MANIPULATED
+  DOCUMENT_PHOTO_MISMATCH
+  FAILED_KEYED_IDENTITY
+  FAILED_OTHER
+}
+
+enum ProviderStatusEnum {
+  CHARGEABLE
+  PENDING
+  FAILED
+  CURRENTLY_DUE
+  EVENTUALLY_DUE
+}
+
+enum ProviderTypeEnum {
+  STRIPE_CARD
+  STRIPE_SEPA_DEBIT
+  STRIPE_SEPA_CREDIT_TRANSFER
+  STRIPE_ACCOUNT
+  STRIPE_BACS_DEBIT
+  DIRECT_WIRE
+}
+
+type PublicAgent {
+  id: UUID!
+  first_name: String!
+  last_name: String!
+  phone_number: PhoneNumber!
+  email: EmailAddress!
+  language: String!
+}
+
+union PublicAgentOrDeletedResource = PublicAgent | DeletedResource
+
+type PublicBranch {
+  id: UUID!
+  name: String!
+  parent_id: UUID!
+}
+
+union PublicBusinessEntity = PublicGroup | PublicBranch | PublicSite | DeletedResource
+
+type PublicExternalContactInvitation {
+  invited_by_agent_id: UUID!
+  invited_by_agent: PublicAgentOrDeletedResource!
+  id: UUID!
+  external_contact_id: UUID!
+  external_contact_first_name: String!
+  external_contact_last_name: String!
+  business_entity_id: UUID!
+  business_entity_type: BusinessEntityTypeEnum!
+  status: ExternalContactStatusEnum!
+  business_entity: PublicBusinessEntity!
+}
+
+type PublicExternalContactInvitationAnswer {
+  answer: PublicExternalContactInvitationAnswerEnum!
+}
+
+enum PublicExternalContactInvitationAnswerEnum {
+  ACCEPTED
+  REFUSED
+}
+
+union PublicExternalContactInvitationAnswerResult = PublicExternalContactInvitationAnswer | NotFoundError | InvalidResourceStateError
+
+union PublicExternalContactInvitationResult = PublicExternalContactInvitation | NotFoundError
+
+type PublicGroup {
+  id: UUID!
+  name: String!
+  business_plan: BusinessPlan!
+}
+
+type PublicIndustry {
+  id: UUID!
+  name: TranslationsDictionary!
+}
+
+type PublicJob {
+  id: UUID!
+  name: TranslationsDictionary!
+}
+
+type PublicMatchmakingProposition {
+  hash: String!
+  user_id: UUID!
+  agent_creator_id: UUID
+  agent_creator: PublicAgentOrDeletedResource
+  _id: ID!
+  answer: PropositionAnswerEnum!
+  status: PropositionStatusEnum!
+  mode: PropositionModeEnum!
+  language: String!
+  income: Int!
+  currency: String!
+  description: String
+  starts_at: DateTime!
+  ends_at: DateTime!
+  address_id: UUID!
+  address: Address!
+  slots: [PublicMatchmakingSlot!]!
+  job_name: TranslationsDictionary!
+  site_name: String!
+  site_id: UUID!
+  display_price: Boolean!
+  multiple_talent_connection_confirmation: Boolean!
+}
+
+union PublicMatchmakingPropositionResult = PublicMatchmakingProposition | ExpiredPropositionError | NotFoundError
+
+type PublicMatchmakingSlot {
+  _id: ID!
+  starts_at: DateTime!
+  ends_at: DateTime!
+  break_minutes: Int!
+  timezone: Timezone!
+}
+
+type PublicNetworkInvitation {
+  id: UUID!
+  first_name: String!
+  last_name: String!
+  creator_id: UUID!
+  creator: PublicAgent!
+  business_entity_id: UUID!
+  site: PublicProfileSite!
+}
+
+union PublicNetworkInvitationResult = PublicNetworkInvitation | NotFoundError
+
+type PublicProfile {
+  id: UUID!
+  first_name: String!
+  last_name: String!
+  zone_ids: [UUID!]!
+  industries: [PublicIndustry!]!
+  is_super_talent: Boolean!
+  profile_picture_key: String
+  profile_picture_url: URL
+  presentation: String
+  experiences: [PublicProfileExperience!]!
+  stats: PublicProfileStats
+  missions: [PublicProfileMissions!]
+  average_rate: Float
+  group_name: [String!]!
+}
+
+type PublicProfileExperience {
+  _id: ID!
+  talent_id: UUID!
+  site_id: UUID!
+  site: PublicProfileSite!
+  index: Int!
+  details: PublicProfileExperienceDetails!
+}
+
+type PublicProfileExperienceDetails {
+  _id: ID!
+  address_id: UUID!
+  first_mission_started_at: Date!
+  last_mission_ended_at: Date!
+  number_of_missions_done: Int!
+  city: String!
+}
+
+type PublicProfileGrade {
+  _id: ID!
+  job: Job!
+  job_id: UUID!
+  grade: Float!
+  count: Int!
+}
+
+type PublicProfileMissions {
+  id: UUID!
+  site_name: String!
+  address_id: UUID!
+  first_mission_started_at: Date!
+  last_mission_ended_at: Date!
+  number_of_missions_done: Int!
+  city: String!
+}
+
+type PublicProfileNotActivatedError {
+  talent_id: UUID!
+}
+
+union PublicProfileResult = PublicProfile | NotFoundError | PublicProfileNotActivatedError
+
+type PublicProfileSite {
+  id: UUID!
+  name: String!
+  profile_picture_key: String
+  profile_picture_url: URL
+}
+
+type PublicProfileStats {
+  total_worked_minutes: Int!
+  total_worked_missions: Int!
+  grade_per_job: [PublicProfileGrade!]!
+  mission_stats_per_industry: [IndustryMissionsStats!]!
+}
+
+type PublicSite {
+  id: UUID!
+  parent_ids: [UUID!]!
+  public_name: String!
+}
+
+type Query {
+  TalentRetrospective(year: Int!): TalentRetrospective!
+  PublicProfile(talent_id: UUID!): PublicProfileResult!
+  ModerationResultForPresentation(presentation: String!): ModerationResult!
+  PresentationSuggestion: PresentationSuggestionResult!
+  Talent: TalentResult!
+  ReliabilityVideo: URL!
+  HACCPQuestionnaire(id: UUID!): HACCPQuestionnaire
+  TalentPublicProfileConfiguration: TalentPublicProfileConfigurationResult!
+  PublicReferralCode(code: String!): ReferralCodeResult!
+  UserBlocklist: [UserBlocklistEntry!]!
+  PublicExternalContactInvitation(short_id: ID!): PublicExternalContactInvitationResult!
+  PublicNetworkInvitationsByPhoneNumber(phone_number: PhoneNumber!): [NetworkInvitation!]!
+  NetworkInvitations: [NetworkInvitation!]!
+  PublicNetworkInvitation(short_id: String!): PublicNetworkInvitationResult!
+  BusinessRelationsWithTalents(business_entity_id: UUID!): BusinessRelationsWithTalent
+  SiteByCode(code: String!): Site
+  PublicSiteByCode(code: String!): Site
+  AvailableJobsForContracts(country: CountryCode!, contracts: [ContractTypeEnum!]!): [GroupJobName!]!
+  HealthcareServicesBySiteTypologies(site_typologies: [UUID!]!, job_ids: [UUID!]!): [HealthcareService!]!
+  OnboardingJobsForRegistrant(registrant_id: UUID!, zone_ids: [UUID!]!, vertical: VerticalEnum!): OnboardingJobsForRegistrantResult!
+  OnboardingFunnelByZoneIdAndJobId(zone_id: UUID!, job_id: UUID!): OnboardingFunnel
+  OnboardingFunnelsByZoneId(zone_id: UUID!): [OnboardingFunnel!]!
+  PublicAvailableJobsForSite(site_id: UUID!): [AvailableJobsForSiteResult!]!
+  SiteTypologiesByJobs(job_ids: [UUID!]!, levels: [Int!]): [SiteTypology!]!
+  OnboardingLanguageTags: [Tag!]!
+  InvoicedGmvDetailsByMonthForPeriod(period: InvoicedGmvDetailsByMonthPeriodInput!): [InvoicedGmvDetailsByMonth!]!
+  OldestInvoicedAt: DateTime
+  LastPreviewPropositions: [PreviewProposition!]!
+  PreviewProposition(hash: String!): PreviewProposition
+  PublicMatchmakingPropositionByShortId(short_id: ID!): PublicMatchmakingPropositionResult!
+  UserPropositions(pagination: PaginationInput!): UserPropositionsFeed!
+  UserSeenPropositions: [Proposition!]!
+  UserSilentPropositions: [Proposition!]!
+  UserUnseenPropositions: [Proposition!]!
+  UserPendingConfirmationPropositions(pagination: PaginationInput): UserPropositionsFeed!
+  Proposition(hash: String!): PropositionOrNotFound!
+  PropositionByShortId(short_id: ID!): PropositionOrNotFoundOrAccessError!
+  TalentExperiences: [TalentExperience!]!
+  ConflictsWithSlots(slots: [OfferSlotsInput!]!, timezone: Timezone!): [OfferSlot!]!
+  TalentInformationForDBSCustomFormCheck: DBSCustomFormCheckInformation!
+  CollectiveConvention(type: CollectiveConventionEnum!, job_id: UUID!): CollectiveConventionOrNotFound
+  BrigadModelVideosForRegistrant(filters: BrigadModelVideosForRegistrantInput): [BrigadModelVideo!]!
+  Registrant: RegistrantResult!
+  PublicAvailableApps(phone_number: PhoneNumber!): [AvailableAppEnum!]!
+  PublicAvailableAppsByUserId(id: UUID!): [AvailableAppEnum!]!
+  PublicCountries: [Country!]!
+  PublicOnboardingZones(country_id: UUID!, vertical: VerticalEnum!): [Zone!]!
+}
+
+enum QuestionTypeEnum {
+  SOFT_SKILLS
+  HARD_SKILLS
+  HACCPS
+  MACHINE
+}
+
+enum QuestionnaireStateEnum {
+  VALIDATED
+  PENDING
+  FAILED
+}
+
+scalar RGB
+
+scalar RGBA
+
+union RPPSForRegistrantResult = Registrant | NotFoundError | BadRequestError
+
+type Redacted {
+  id: UUID!
+}
+
+type ReferralCode {
+  id: UUID!
+  type: ReferralCodeTypeEnum!
+  code: String!
+  enabled: Boolean!
+  expires_at: DateTime
+}
+
+union ReferralCodeResult = NotFoundError | ExpiredCodeError | ReferralCode
+
+enum ReferralCodeTypeEnum {
+  TALENT_REFERRAL
+  LUCKY_DRAW
+}
+
+type Registrant {
+  id: UUID!
+  healthcare_service_ids: [UUID!]
+  healthcare_services: [HealthcareService!]!
+  primary_job: Job
+  secondary_jobs: [Job!]
+  onboarding_jobs: [Job!]
+  questionnaire_id: UUID
+  questionnaires_ids: [UUID!]
+  skills_questionnaires_to_take: [Job!]!
+  should_record_experiences_videos: Boolean!
+  should_take_site_typology_questionnaire: Boolean!
+  can_be_validated_without_call: Boolean!
+  site_typology_ids: [UUID!]
+  site_typologies: [SiteTypology!]!
+  talent_documents: TalentDocuments!
+  talent_documents_status: TriStateDocumentStatus!
+  associated_billing_data: TalentBillingData
+  first_name: String
+  last_name: String
+  email: EmailAddress!
+  phone_number: PhoneNumber
+  zone_ids: [UUID!]!
+  experiences_videos_flow_id: UUID
+  rpps: String
+  stage: CandidateStageEnum!
+  stage_name: CandidateStageNameEnum
+  should_upload_rpps: Boolean!
+  contract_types: [ContractTypeEnum!]!
+  ready_to_be_validated: Boolean!
+  working_country: CountryCode
+  language: String!
+  address: Address
+  calendly_event: RegistrantCalendlyEvent
+  vertical: VerticalEnum
+  declared_certificates: [Certificate!]
+  created_at: DateTime!
+  no_call_validation_with_verification: Boolean!
+  has_access_to_neob: Boolean!
+  disqualifications: [Disqualification!]!
+  experiences: [RegistrantExperience!]!
+  skills_questionnaires: [SkillsVerificationsQuestionnaire!]
+  email_validated: Boolean!
+}
+
+type RegistrantCalendlyEvent {
+  id: UUID!
+  created_at: DateTime!
+  canceled_at: DateTime
+  starts_at: DateTime!
+  ends_at: DateTime!
+  reschedule_url: URL!
+  cancel_url: URL!
+  user_name: String
+  user_email: EmailAddress
+}
+
+type RegistrantExperience {
+  id: UUID!
+  job_id: UUID!
+  job: Job!
+  start_date: String!
+  end_date: String
+  business_name: String!
+  business_city: String!
+  site_typology_ids: [UUID!]!
+  site_typologies: [SiteTypology!]!
+  healthcare_service_ids: [UUID!]!
+  healthcare_services: [HealthcareService!]!
+  description: String
+  work_certificate_ids: [UUID!]!
+  work_certificates: [Document!]!
+}
+
+type RegistrantExperienceVideo {
+  _id: ID!
+  registrant_id: UUID!
+  flow_id: UUID!
+  s3_key: String
+  question_id: UUID!
+  question: ExperiencesVideoQuestion!
+  url: URL
+  consumed_at: DateTime
+}
+
+union RegistrantResult = Registrant | NotFoundError
+
+type RegistrantUser {
+  user_id: UUID!
+}
+
+enum RegistrationFunnelScreenEnum {
+  DOCUMENTS_PRE_CALL_BOOKED
+  BOOK_A_CALL
+}
+
+union Regularization = TalentRegularization | AgentRegularization
+
+type RegularizationError {
+  error_code: RegularizationErrorEnum!
+}
+
+enum RegularizationErrorEnum {
+  TOO_SOON
+  TOO_LATE
+}
+
+enum RegularizationStatusEnum {
+  PENDING
+  REFUSED
+  APPROVED
+  CANCELED
+  APPROVED_BY_CODE
+}
+
+interface RegularizationTemplate {
+  id: UUID!
+  created_at: DateTime!
+  updated_at: DateTime!
+  updated_by: UpdatedBy
+  expired_at: DateTime!
+  offer_id: UUID!
+  requester_type: UserTypeEnum!
+  requester_id: UUID!
+  responder_id: UUID
+  current_slot_ids: [UUID!]!
+  new_slot_ids: [UUID!]!
+  status: RegularizationStatusEnum!
+  requester_reason: String
+  responder_reason: String
+  validation_code: String!
+}
+
+union RemovePublicExperienceResult = EditPublicExperienceSuccess | NotFoundError
+
+type RequiredCertificateDocumentRequirement {
+  state: TalentDocumentsMandatoryState!
+  possible_types: [CertificateDocumentType!]!
+  job: Job!
+}
+
+type RequiredDocumentsForContracts {
+  freelance: TriStateDocumentStatus!
+  fixed_term: TriStateDocumentStatus!
+  interim: TriStateDocumentStatus!
+  cddu: TriStateDocumentStatus!
+}
+
+type ResumeDocument {
+  state: TalentDocumentsOptionalState!
+  last_uploaded_document: LastUploadedDocument
+}
+
+type ResumeDocumentRequirement {
+  state: TalentDocumentsOptionalState!
+}
+
+scalar RoutingNumber
+
+scalar SESSN
+
+scalar SafeInt
+
+scalar SemVer
+
+enum SeniorityBonusDocumentRequiredEnum {
+  CERTIFICATE
+  PAYSLIP
+  OTHER
+}
+
+type SeniorityBonusPercentage {
+  seniority_in_year: Int!
+  percentage: Float!
+}
+
+type Session {
+  updated_by: UpdatedBy
+}
+
+enum SessionDeviceTypeEnum {
+  MOBILE_STAFFING_BUSINESS
+  MOBILE_STAFFING_BRIGADER
+  JOB_BOARD
+  ADMIN_PANEL
+  OPENREPLAY
+  INTERNAL
+  CYPRESS
+  NEOB_TALENT
+  NEOB
+}
+
+enum ShortTermContractTemplateVariableCategoryEnum {
+  TALENT
+  BUSINESS
+  CONTRACT_AND_MISSION
+  CUSTOM
+}
+
+enum ShortTermPricingConfigurationMissionStatusEnum {
+  DONE
+  CANCELLED
+}
+
+enum SignatureDocumentTypeEnum {
+  MISSION_SHORT_TERM_CONTRACT
+}
+
+type Site {
+  id: UUID!
+  public_name: String!
+  profile_picture_key: String
+  profile_picture_url: URL
+  phone_number: String
+  description: String
+  group_id: UUID!
+  group: Group!
+  default_industry: Industry
+  configuration: BusinessConfiguration
+  default_address: Address
+  inheritance_ids: [UUID!]!
+  total_received_reviews: Int!
+  rework_rate: Int
+  pricing_configuration: BusinessPricingConfiguration
+}
+
+type SiteAddress {
+  id: UUID!
+  site_id: UUID!
+  address_id: UUID!
+  address: Address!
+  default: Boolean!
+  name: String
+  description: String
+  parking_availability: ParkingAvailabilityEnum
+}
+
+enum SiteStateEnum {
+  PENDING
+  VALIDATED
+  SUSPENDED
+  REFUSED
+  CLOSED
+}
+
+enum SiteSuspensionReasonEnum {
+  UNPAID_MISSIONS
+  FINANCE_BLOCKER
+  PAYMENT_METHOD_FAILURE
+  INHERITED_FROM_GROUP
+}
+
+type SiteTypology {
+  id: UUID!
+  name: TranslationsDictionary!
+  parent_id: UUID
+  group_vertical: GroupVerticalEnum!
+  user_target: SiteTypologyUserTargetEnum!
+  level: Int!
+  children: [SiteTypology!]!
+  healthcare_services: [HealthcareService!]!
+}
+
+type SiteTypologyByJob {
+  job: Job!
+  site_typology_ids: [UUID!]
+}
+
+enum SiteTypologyUserTargetEnum {
+  BUSINESS
+  TALENT
+}
+
+type SkillsVerificationsAnswer {
+  id: UUID!
+  answers_indexes: [Int!]
+  answered: Boolean!
+  timeout: Boolean
+  start_time: DateTime
+  end_time: DateTime
+}
+
+type SkillsVerificationsConfigFunnel {
+  job: Job!
+  minimum_valid_answers: Int!
+  configuration: SkillsVerificationsFunnelConfiguration!
+}
+
+type SkillsVerificationsFunnelConfiguration {
+  questions_distribution: SkillsVerificationsQuestionsDistribution!
+}
+
+type SkillsVerificationsQuestion {
+  id: UUID!
+  title: String!
+  format: SkillsVerificationsQuestionFormatEnum!
+  type: SkillsVerificationsQuestionTypeEnum!
+  index: Int!
+  choices: [String!]!
+  valid_answers_indexes: [Int!]!
+  answer: SkillsVerificationsAnswer!
+}
+
+enum SkillsVerificationsQuestionFormatEnum {
+  ONE_ANSWER
+  MULTIPLE_ANSWERS
+}
+
+enum SkillsVerificationsQuestionTypeEnum {
+  SOFT_SKILLS
+  HARD_SKILLS
+  HACCPS
+  MACHINE
+}
+
+type SkillsVerificationsQuestionnaire {
+  id: UUID!
+  is_questionnaire_based_on_primary_job: Boolean!
+  funnel_configuration: SkillsVerificationsConfigFunnel!
+  status: SkillsVerificationsStatusEnum!
+  questions: [SkillsVerificationsQuestion!]!
+  banned_job_ends_at: DateTime
+}
+
+type SkillsVerificationsQuestionsDistribution {
+  HARD_SKILLS: Int!
+  SOFT_SKILLS: Int!
+  HACCPS: Int!
+  MACHINE: Int!
+}
+
+enum SkillsVerificationsStatusEnum {
+  NOT_STARTED
+  IN_PROGRESS
+  SUCCEEDED
+  FAILED
+}
+
+input SkillsVerificationsUpdateAnswerInput {
+  answers_indexes: [Int!]
+  start_time: DateTime
+  end_time: DateTime
+  timeout: Boolean
+}
+
+type Slot {
+  id: UUID!
+  starts_at: DateTime!
+  ends_at: DateTime!
+  start_date: String!
+  end_date: String!
+  start_time: String!
+  end_time: String!
+  break_minutes: Int!
+  timezone: Timezone!
+}
+
+union SlotDetail = ChangedSlot | ValidatedSlot
+
+type SlotPair {
+  referent_slot: MatchmakingSlot!
+  new_slot: MatchmakingSlot
+}
+
+input SlotPairInput {
+  referent_slot: MatchmakingSlotInput!
+  new_slot: MatchmakingSlotInput
+}
+
+input SortInput {
+  field: String
+  type: SortTypeEnum
+}
+
+enum SortTypeEnum {
+  ASC
+  DESC
+}
+
+type SpellCheckPresentation {
+  text_parts: [SpellcheckTextPart!]!
+}
+
+union SpellCheckPresentationResult = SpellCheckPresentation | UserInputError | BadRequestError | AIProcessingError
+
+type SpellcheckTextPart {
+  content: String!
+  corrected_content: String
+}
+
+type StripeError {
+  method: String!
+  resource_id: String!
+  message: String!
+}
+
+type SuspensionState {
+  updated_by: UpdatedBy
+}
+
+type SyncAllQuestions {
+  questions: [RegistrantExperienceVideo!]!
+}
+
+type SyncAllQuestionsError {
+  error_key: SyncAllQuestionsErrorEnum!
+}
+
+enum SyncAllQuestionsErrorEnum {
+  REGISTRANT_NOT_FOUND
+  EXPERIENCES_VIDEOS_QUESTIONS_NOT_FOUND
+  ALL_QUESTIONS_ALREADY_SYNCED
+}
+
+union SyncAllQuestionsResult = SyncAllQuestions | SyncAllQuestionsError
+
+type SystemUpdatedBy {
+  event_name: String
+  type: String!
+  service: String
+}
+
+type SystemUser {
+  user_id: UUID!
+}
+
+type Tag {
+  id: UUID!
+  name: TranslationsDictionary!
+  category: TagCategoryEnum!
+  updated_by: UpdatedBy
+}
+
+enum TagCategoryEnum {
+  INTERNAL
+  LANGUAGES
+  SPECIALITIES
+  MOBILITY
+}
+
+type Talent {
+  id: UUID!
+  first_name: String!
+  last_name: String!
+  phone_number: PhoneNumber!
+  email: EmailAddress!
+  birth_date: Date
+  profile_picture_key: String
+  presentation: String
+  referral_code_id: UUID
+  tags: [Tag!]!
+  skills: JSON!
+  formatted_skills: [TalentSkill!]!
+  new_skills: [TalentSkill!]!
+  dbs_check_pending_or_validated: Boolean!
+  site_typologies_by_job: [SiteTypologyByJob!]
+  healthcare_services_by_job: [HealthcareServiceByJob!]
+  job_ids: [UUID!]!
+  jobs: [Job!]!
+  jobs_should_take_and_has_not_answered_haccp_questionnaire: [[Job!]!]!
+  haccp_questionnaires: [HACCPQuestionnaire!]!
+  registered_with_referral_code: ReferralCode
+  career_experiences: [TalentCareerExperience!]!
+  has_short_term_job_in_skills: Boolean!
+  has_freelance_job_in_skills: Boolean!
+  has_any_jobs_available_for_freelance: Boolean!
+  has_any_jobs_available_for_short_term: Boolean!
+  jobs_should_take_and_has_not_answered_site_typology_questionnaire: [Job!]!
+  personal_checks_uploaded_documents: PersonalChecksUploadedDocument
+  talent_documents: TalentDocuments!
+  has_required_documents_for_contracts: RequiredDocumentsForContracts!
+  number_of_propositions: NumberOfPropositions!
+  is_super_talent_since: DateTime
+  total_short_term_offers: CountTalentOffers!
+  intercom_id: String
+  intercom_web_user_hash: String!
+  intercom_android_user_hash: String!
+  intercom_ios_user_hash: String!
+}
+
+type TalentBillingData {
+  id: UUID!
+  city: String!
+  company_active: CompanyActiveEnum!
+  company_category: Int
+  company_info_available: CompanyInfoAvailableEnum!
+  company_name_match: CompanyNameMatchEnum!
+  company_reference_exemption_ends_at: DateTime
+  company_reference_last_check_status: CompanyNumberValidityEnum
+  company_reference: String
+  country: CountryCode!
+  created_at: DateTime!
+  invoice_number_prefix: Int!
+  last_checked_at: DateTime
+  name: String!
+  proof_of_company_date_since_required: DateTime
+  proof_of_company_exemption_ends_at: DateTime
+  proof_of_company_requirement_status: ProofOfCompanyRequirementStatusEnum!
+  status_reasons: [BillingDataStatusReasonsEnum!]!
+  status: BillingDataStatusesEnum!
+  street: String!
+  updated_at: DateTime!
+  urssaf_tdae_eligible: Boolean!
+  vat_reference: String
+  vat_subject: Boolean
+  vat_subjection_check: VatSubjectionEnum
+  zip: String!
+  freelance: Boolean!
+  ape_code: String
+  last_valid_proof_of_company_expires_at: Date
+  suggested_name: String
+}
+
+type TalentCareerExperience {
+  id: UUID!
+  job_id: UUID!
+  job: Job!
+  start_date: String!
+  end_date: String
+  business_name: String!
+  business_city: String!
+  site_typology_ids: [UUID!]!
+  site_typologies: [SiteTypology!]!
+  healthcare_service_ids: [UUID!]!
+  healthcare_services: [HealthcareService!]!
+  description: String
+  work_certificate_ids: [UUID!]!
+  work_certificates: [Document!]!
+}
+
+type TalentDocuments {
+  _id: ID!
+  talent_id: UUID!
+  identification: IdentificationDocument!
+  selfie: MandatoryDocument!
+  certificates: [CertificateDocument!]!
+  bank_information: NotMandatoryDocument!
+  social_security: NotMandatoryDocument!
+  resume: ResumeDocument!
+  work_certificates: WorkCertificatesDocument!
+  proof_of_address: NotMandatoryDocument!
+  share_code: NotMandatoryDocument!
+  proof_of_company: AllStateDocument!
+  rpps: NotMandatoryDocument!
+  food_safety_certificate: FoodSafetyCertificateDocument!
+  french_billing_data_certificate: NotMandatoryDocument!
+}
+
+enum TalentDocumentsAllState {
+  REQUIRED
+  VALIDATED
+  REQUIRED_PENDING
+  OPTIONAL_PENDING
+  NOT_NEEDED
+  OPTIONAL
+}
+
+enum TalentDocumentsCantBeValidatedState {
+  REQUIRED
+  NOT_NEEDED
+}
+
+enum TalentDocumentsMandatoryState {
+  REQUIRED
+  REQUIRED_PENDING
+  VALIDATED
+}
+
+enum TalentDocumentsNotMandatoryState {
+  REQUIRED
+  VALIDATED
+  REQUIRED_PENDING
+  NOT_NEEDED
+}
+
+enum TalentDocumentsNotNeededState {
+  NOT_NEEDED
+}
+
+enum TalentDocumentsOptionalState {
+  NOT_NEEDED
+  OPTIONAL
+  OPTIONAL_PENDING
+}
+
+type TalentDocumentsRequirements {
+  identification: IdentificationDocumentRequirement!
+  selfie: MandatoryDocumentRequirement!
+  certificates: CertificateDocumentRequirement!
+  bank_information: NotMandatoryDocumentRequirement!
+  social_security: NotMandatoryDocumentRequirement!
+  resume: ResumeDocumentRequirement!
+  work_certificates: WorkCertificatesDocumentRequirement!
+  proof_of_address: NotMandatoryDocumentRequirement!
+  share_code: NotMandatoryDocumentRequirement!
+  proof_of_company: AllStateDocumentRequirement!
+  rpps: NotMandatoryDocumentRequirement!
+  food_safety_certificate: FoodSafetyCertificateDocumentRequirement!
+  french_billing_data_certificate: AllStateDocumentRequirement!
+  criminal_record: CriminalRecordDocumentRequirement!
+}
+
+type TalentExperience {
+  site: PublicSite!
+  details: PublicProfileExperienceDetails!
+}
+
+enum TalentGenderEnum {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum TalentIdentityVerificationFrequencyEnum {
+  ALL_MISSIONS
+  FIRST_MISSION
+}
+
+enum TalentIdentityVerificationStatusEnum {
+  PENDING
+  SUCCESS
+  FAILED
+  EXPIRED
+}
+
+type TalentPublicProfileConfiguration {
+  _id: ID!
+  talent_id: UUID!
+  is_activated: Boolean!
+  has_setup_experiences: Boolean!
+  chosen_experiences: [PublicProfileExperience!]!
+}
+
+union TalentPublicProfileConfigurationResult = TalentPublicProfileConfiguration | NotFoundError
+
+type TalentRegularization implements RegularizationTemplate {
+  id: UUID!
+  created_at: DateTime!
+  updated_at: DateTime!
+  updated_by: UpdatedBy
+  expired_at: DateTime!
+  offer_id: UUID!
+  requester_type: UserTypeEnum!
+  requester_id: UUID!
+  responder_id: UUID
+  current_slot_ids: [UUID!]!
+  current_slots: [Slot!]!
+  new_slot_ids: [UUID!]!
+  new_slots: [Slot!]!
+  status: RegularizationStatusEnum!
+  requester_reason: String
+  responder_reason: String
+  difference_in_minutes: Int!
+  impacted_slots: [SlotDetail!]!
+  validation_code: String!
+}
+
+union TalentResult = Talent | NotFoundError
+
+type TalentRetrospective {
+  total_missions_done: Int!
+  total_unique_sites: Int!
+  rework_rate: Float
+  total_worked_hours: Float!
+  job_with_most_offers: Job
+  site_with_most_hours_worked: Site
+  most_hours_worked_on_unique_site: Float
+  total_sites_with_talent_in_favorites: Int!
+}
+
+type TalentSkill {
+  _id: ID!
+  talent_id: UUID!
+  job_id: UUID!
+  job: Job!
+  industry_ids: [UUID!]!
+  industries: [Industry!]!
+  tag_ids: [UUID!]!
+  tags: [Tag!]!
+  contract_type: ContractTypeEnum!
+  site_id: UUID
+}
+
+type TalentUser {
+  user_id: UUID!
+}
+
+scalar Time
+
+scalar TimeZone
+
+scalar Timestamp
+
+scalar Timezone
+
+type TokenPassport {
+  id: UUID!
+  created_at: DateTime!
+  updated_at: DateTime!
+  name: PassportNameEnum!
+  data: TokenPassportData!
+  user_id: UUID!
+}
+
+input TokenPassportCreationInput {
+  email: EmailAddress!
+  access_token: String!
+}
+
+type TokenPassportData {
+  access_token: String
+}
+
+input TokenPassportInput {
+  access_token: String!
+}
+
+scalar TranslationsDictionary
+
+enum TransportationTypeEnum {
+  WALKING
+  CYCLING
+  PUBLIC_TRANSPORT
+  DRIVING
+}
+
+type TravelTime {
+  preferred: TravelTimeByTransportation!
+  transportations: [TravelTimeByTransportation!]!
+  preferred_departure: TravelTimeByTransportation
+  transportations_departure: [TravelTimeByTransportation!]
+}
+
+type TravelTimeByTransportation {
+  mode: TransportationTypeEnum!
+  time: Int!
+  distance: Int
+}
+
+enum TravelTimeJourneyEnum {
+  ARRIVAL
+  DEPARTURE
+  BOTH
+}
+
+enum TriStateDocumentStatus {
+  HAS_REQUIRED
+  HAS_PENDING
+  ALL_GOOD
+}
+
+scalar URL
+
+scalar USCurrency
+
+input UTMInput {
+  source: String
+  medium: String
+  campaign: String
+}
+
+scalar UUID
+
+enum UkFoodSafetyCertificateLevel {
+  LEVEL_1
+  LEVEL_2
+  LEVEL_3
+}
+
+type UnavailabilitySlot {
+  updated_by: UpdatedBy
+}
+
+type UncompletedBrigader {
+  updated_by: UpdatedBy
+}
+
+scalar UnsignedFloat
+
+scalar UnsignedInt
+
+union UpdatedBy = SystemUpdatedBy | AdministratorUpdatedBy | BrigaderUpdatedBy | CandidateUpdatedBy | AgentUpdatedBy
+
+scalar Upload
+
+input UpsertBusinessRelationsWithTalentInput {
+  not_employee: Boolean
+}
+
+type User {
+  updated_by: UpdatedBy
+  _id: ID!
+  id: UUID!
+  created_at: DateTime!
+  updated_at: DateTime!
+  email: EmailAddress!
+  type: UserTypeEnum!
+  email_validated: Boolean!
+  language: String
+}
+
+type UserBlocklistEntry {
+  id: UUID!
+  created_at: DateTime!
+  site_id: UUID!
+}
+
+enum UserConsentAgreementEnum {
+  BUSINESS_TERMS_OF_SERVICE
+  BUSINESS_PRIVACY_POLICY
+  TALENT_TERMS_OF_SERVICE
+  TALENT_PRIVACY_POLICY
+  TALENT_STRIPE_TERMS_OF_SERVICE
+  TALENT_STRIPE_CONNECT_TERMS_OF_SERVICE
+}
+
+type UserInputError implements BaseError {
+  type: ErrorTypeEnum!
+  properties: [UserInputErrorProperty!]!
+  message: String
+}
+
+type UserInputErrorProperty {
+  field_name: String!
+  error: FieldErrorEnum!
+}
+
+type UserPropositionsFeed {
+  nodes: [Proposition!]!
+  total: Int!
+}
+
+enum UserTypeEnum {
+  BRIGADER
+  AGENT
+  ADMINISTRATOR
+  JOB_SEEKER
+  CANDIDATE
+  EXTERNAL_AGENT
+  REGISTRANT
+}
+
+scalar UtcOffset
+
+type ValidatedSlot {
+  id: UUID!
+  valid: Boolean!
+}
+
+type Variant {
+  hash: String!
+  slots: [MatchmakingSlot!]!
+  site: Site!
+  contract_type: ContractTypeEnum!
+  extra_documents_required: [DocumentTypeEnum!]!
+  extra_documents_optional: [DocumentTypeEnum!]!
+  job: Job!
+  business_id: UUID!
+  _id: ID!
+  created_at: DateTime!
+  currency: Currency!
+  description: String
+  pricing: Pricing!
+  tag_ids: [UUID!]!
+  timezone: Timezone!
+  starts_at: DateTime!
+  starts_at_formatted: FormattedDate!
+  ends_at: DateTime!
+  ends_at_formatted: FormattedDate!
+  total_worked_minutes: Int!
+  has_dbs_tag: Boolean!
+  mission_connectors: [Connector!]!
+  industry: Industry!
+  site_address: SiteAddress
+  equipments: [Equipment!]!
+  tags: [Tag!]!
+  zone: Zone!
+  income: Int!
+  raw_income: Int!
+}
+
+enum VatSubjectionEnum {
+  UNKNOWN
+  SUBJECT
+  NONSUBJECT
+}
+
+enum VerticalEnum {
+  HOSPITALITY
+  HEALTHCARE
+  OTHER
+}
+
+scalar Void
+
+type WorkCertificatesDocument {
+  state: TalentDocumentsOptionalState!
+  linked_document_ids: [UUID!]!
+  linked_documents: [Document!]!
+}
+
+type WorkCertificatesDocumentRequirement {
+  state: TalentDocumentsOptionalState!
+}
+
+type Zone {
+  id: UUID!
+  name: String!
+  group_name: String!
+  updated_at: DateTime!
+  updated_by: UpdatedBy
+}
+
+enum ZoneTagEnum {
+  BRIGADER
+  BUSINESS
+}
+
+input createRegularizationInput {
+  offer_id: UUID!
+  reason: String
+  impacted_slots: [ImpactedSlots!]!
+  agent_id_to_notify: UUID
+}

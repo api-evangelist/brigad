@@ -1,0 +1,72 @@
+generated: '2026-08-17'
+method: derived
+source: graphql/brigad-talent.graphql, graphql/brigad-agent.graphql, graphql/brigad-legacy.graphql
+note: >-
+  Entity-relationship graph derived from the captured GraphQL SDLs (open
+  introspection). Brigad's two-sided marketplace core: independent professionals
+  (Talent) are matched to businesses (Agent/Site) through Missions and
+  Propositions. Field references below are the linking fields observed on each
+  GraphQL type; this is a high-level map of the marquee entities, not the full
+  1100+ type schema.
+entities:
+- name: Talent
+  domain: talent
+  description: Independent/self-employed professional (chef, waiter, carer, nurse, ...).
+  key: id
+  relationships:
+  - {kind: has_many, to: Job, via: jobs}
+  - {kind: has_many, to: Proposition, via: propositions}
+  - {kind: has_one, to: PublicProfile, via: profile}
+  - {kind: has_many, to: Availability, via: availabilities}
+- name: Registrant
+  domain: talent
+  description: A Talent progressing through the onboarding/registration funnel.
+  key: id
+  relationships:
+  - {kind: belongs_to, to: Talent, via: talent}
+  - {kind: has_many, to: Experience, via: experiences}
+  - {kind: belongs_to, to: Zone, via: zone}
+- name: Agent
+  domain: business
+  description: A user account acting on behalf of a business (with role/access + site scope).
+  key: id
+  relationships:
+  - {kind: has_many, to: Site, via: access}
+- name: Site
+  domain: business
+  description: A business location (restaurant, hotel, clinic, retirement home, ...).
+  key: id
+  relationships:
+  - {kind: belongs_to, to: BusinessEntity, via: entity}
+  - {kind: belongs_to, to: Group, via: group}
+  - {kind: has_one, to: BusinessConfiguration, via: configuration}
+- name: Mission
+  domain: shared
+  description: A short-term staffing assignment linking a Talent to a Site/Business.
+  key: id
+  relationships:
+  - {kind: belongs_to, to: Talent, via: talent}
+  - {kind: belongs_to, to: Site, via: site}
+  - {kind: belongs_to, to: Business, via: business}
+  - {kind: belongs_to, to: Job, via: job}
+  - {kind: has_one, to: Contract, via: contract}
+  - {kind: belongs_to, to: Zone, via: zone}
+- name: Proposition
+  domain: talent
+  description: A match/offer of a mission surfaced to a Talent (accept/refuse/interest).
+  key: hash
+  relationships:
+  - {kind: belongs_to, to: Talent, via: talent}
+  - {kind: belongs_to, to: User, via: user}
+- name: MissionTemplate
+  domain: business
+  description: A reusable mission definition a business uses to create missions.
+  key: id
+  relationships:
+  - {kind: belongs_to, to: Site, via: site}
+- name: Invoice
+  domain: business
+  description: Billing document for missions delivered to a business.
+  key: id
+  relationships:
+  - {kind: belongs_to, to: Site, via: site}

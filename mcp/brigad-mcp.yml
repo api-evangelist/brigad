@@ -1,0 +1,32 @@
+generated: '2026-08-17'
+method: derived
+status: candidate
+source: graphql/brigad-talent.graphql, graphql/brigad-agent.graphql
+note: >-
+  Brigad ships no MCP server. This is a DERIVED candidate tool sketch mapped from
+  the first-party GraphQL routers so the agent surface Brigad already has (an
+  open-introspection GraphQL API) is recorded. No endpoint is invented.
+deployment:
+  mode: none
+  auth: unknown
+  verified: derived
+  note: >-
+    No hosted (remote) MCP endpoint and no stdio package exist. The underlying
+    callable surface is GraphQL (mutations require an end-user session); an MCP
+    wrapper would have to be built by Brigad or a third party.
+server:
+  name: brigad
+  transport: none
+tools:
+- name: list_available_missions
+  description: List available missions/propositions for a talent.
+  source_operation: graphql/brigad-talent.graphql#AvailableJobsForContracts
+- name: accept_proposition
+  description: Accept a mission proposition as a talent.
+  source_operation: graphql/brigad-talent.graphql#acceptProposition
+- name: create_mission
+  description: Create a short-term mission as a business.
+  source_operation: graphql/brigad-agent.graphql#createManyMissions
+- name: validate_mission
+  description: Validate a completed mission as a business.
+  source_operation: graphql/brigad-agent.graphql#validateMission

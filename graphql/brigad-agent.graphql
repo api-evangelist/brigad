@@ -1,0 +1,3282 @@
+# generated: '2026-08-17'
+# method: searched
+# source: https://brigadhsp-router-agent-brigadhsp-prod.plat.euw1.prod.brigad.cloud/graphql
+# note: Brigad first-party GraphQL router (agent schema) reachable from Brigad's own web app
+#   (app.hsp.brigad.co bundle). Anonymous introspection is OPEN; live SDL captured verbatim.
+#   Undocumented internal app backend, not a published developer API. Ownership: host is
+#   *.brigad.cloud and the endpoint is hardcoded in Brigad's own SPA JavaScript.
+
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+input AcceptNetworkApplicationInput {
+  application_id: UUID!
+  skills: [NetworkApplicationSkillInput!]!
+  type: NetworkTypeEnum!
+}
+
+type AccessError implements BaseError {
+  type: ErrorTypeEnum!
+  ressource: String!
+}
+
+type AccessRole {
+  updated_by: UpdatedBy
+}
+
+scalar AccountNumber
+
+type AccreditationInformations {
+  updated_by: UpdatedBy
+}
+
+enum AcquisitionGoalEnum {
+  FAST_GROWTH
+  GROW
+  SUSTAIN
+}
+
+type Address {
+  id: UUID!
+  street: String!
+  city: String!
+  zip: String!
+  state: String!
+  country: String!
+  iso_country: String!
+  updated_by: UpdatedBy
+}
+
+type Administrator {
+  updated_by: UpdatedBy
+}
+
+type AdministratorUpdatedBy {
+  user_id: UUID!
+}
+
+type AdministratorUser {
+  user_id: UUID!
+}
+
+type Agent {
+  id: UUID!
+  first_name: String!
+  last_name: String!
+  email: EmailAddress!
+  role: BusinessRole
+  access_ids: [UUID!]!
+  site_ids: [UUID!]!
+  has_unpaid_missions: Boolean!
+  intercom_id: String
+  intercom_web_user_hash: String!
+  intercom_android_user_hash: String!
+  intercom_ios_user_hash: String!
+}
+
+union AgentOrDeletedResource = Agent | DeletedResource
+
+type AgentRegularization implements RegularizationTemplate {
+  id: UUID!
+  created_at: DateTime!
+  updated_at: DateTime!
+  updated_by: UpdatedBy
+  expired_at: DateTime!
+  offer_id: UUID!
+  requester_type: UserTypeEnum!
+  requester_id: UUID!
+  responder_id: UUID
+  current_slot_ids: [UUID!]!
+  current_slots: [Slot!]!
+  new_slot_ids: [UUID!]!
+  new_slots: [Slot!]!
+  status: RegularizationStatusEnum!
+  requester_reason: String
+  responder_reason: String
+  impacted_slots: [SlotDetail!]!
+  validation_code: String!
+}
+
+type AgentUpdatedBy {
+  user_id: UUID!
+  _id: ID!
+  type: String!
+}
+
+type AgentUser {
+  user_id: UUID!
+}
+
+type AgentWithManagementInfo {
+  agent: Agent!
+  can_manage: Boolean!
+}
+
+enum AiDecisionEnum {
+  VALIDATED
+  DISQUALIFIED
+}
+
+enum AiDecisionSkillsQuestionnaireStatusEnum {
+  FAILED
+  SUCCEEDED
+  NONE
+}
+
+enum AiDecisionTypeEnum {
+  LANGUAGE
+  INDUSTRIES
+  SKILLS
+}
+
+type AlreadyExistsError implements BaseError {
+  type: ErrorTypeEnum!
+  ressource: String!
+  identifiers: [String!]!
+}
+
+input AlternativeContractStaffingInput {
+  job_id: UUID!
+  manual_prices: ManualPricesInput
+}
+
+union AnswerMatchmakingPropositionPartialAvailabilityResult = MatchmakingProposition | NotFoundError | UserInputError
+
+type ApplePassport {
+  id: UUID!
+  created_at: DateTime!
+  updated_at: DateTime!
+  name: PassportNameEnum!
+  data: ApplePassportData!
+  user_id: UUID!
+  updated_by: UpdatedBy
+}
+
+type ApplePassportData {
+  email: EmailAddress!
+  access_token: String
+  email_verified: Boolean!
+  aud: String!
+  sub: String!
+}
+
+input ApplePassportInput {
+  access_token: String!
+}
+
+enum AvailableAppEnum {
+  HLC
+  HSP
+}
+
+type AvailableJobsForSiteResult {
+  job: Job!
+  tags: [Tag!]!
+}
+
+type BadRequestError implements BaseError {
+  type: ErrorTypeEnum!
+  message: String!
+}
+
+type Badge {
+  updated_by: UpdatedBy
+}
+
+union BankDetails = UKBankDetails | EUBankDetails
+
+interface BaseError {
+  type: ErrorTypeEnum!
+}
+
+scalar BigInt
+
+interface BillingDataInformation {
+  id: UUID!
+  city: String!
+  company_active: CompanyActiveEnum!
+  company_reference: String
+  country: CountryCode!
+  created_at: DateTime!
+  invoice_number_prefix: Int!
+  name: String!
+  status_reasons: [BillingDataStatusReasonsEnum!]!
+  status: BillingDataStatusesEnum!
+  street: String!
+  updated_at: DateTime!
+  vat_reference: String
+  zip: String!
+  suggested_name: String
+}
+
+enum BillingDataStatusReasonsEnum {
+  MISSING_COMPANY_REFERENCE
+  INVALID_COMPANY_REFERENCE
+  INACTIVE_COMPANY
+  NAME_MISMATCH
+  CATEGORY_MISMATCH
+  VAT_REFERENCE_MISMATCH
+  MISSING_PROOF_OF_COMPANY
+  EXPIRED_PROOF_OF_COMPANY
+}
+
+enum BillingDataStatusesEnum {
+  VALID
+  FAILED
+  UNKNOWN
+}
+
+type Branch {
+  id: UUID!
+  name: String!
+  parent_id: UUID!
+}
+
+enum BrigadModelVideosCategoryEnum {
+  MODEL
+  COMMITMENTS
+}
+
+input BrigadModelVideosForRegistrantInput {
+  language: Locale
+  category: BrigadModelVideosCategoryEnum
+  targets: [ContractTypeEnum!]
+}
+
+union BrigadUser = AdministratorUser | TalentUser | RegistrantUser | AgentUser | SystemUser | DeletedUser
+
+enum BrigaderOfferRequestStatusEnum {
+  VALIDATED
+  CANCELED_BY_BRIGADER
+  CANCELED_BY_AGENT
+  CANCELED_BY_VALIDATOR
+  PENDING
+  PENDING_VALIDATION
+  EXPIRED
+}
+
+type BrigaderUpdatedBy {
+  user_id: UUID!
+  _id: ID!
+  type: String!
+}
+
+type BusinessBillingData implements BillingDataInformation {
+  id: UUID!
+  city: String!
+  company_active: CompanyActiveEnum!
+  company_reference: String!
+  country: CountryCode!
+  country_alpha_2: String!
+  created_at: DateTime!
+  invoice_number_prefix: Int!
+  name: String!
+  orchestrade_client_id: UUID
+  orchestrade_code: String
+  status_reasons: [BillingDataStatusReasonsEnum!]!
+  status: BillingDataStatusesEnum!
+  street: String!
+  updated_at: DateTime!
+  vat_subject: Boolean!
+  vat_reference: String
+  zip: String!
+  suggested_name: String
+  ape_code: String
+  urssaf_code: String
+  urssaf_health_service: String
+  is_company_in_receivership: Boolean!
+}
+
+type BusinessBillingDataMapping {
+  _id: ID!
+  entity_id: UUID!
+  entity_type: EntityTypeEnum!
+  billing_data_id: UUID
+  billing_data: BusinessBillingData
+  inherited_from: UUID
+}
+
+type BusinessConfiguration {
+  _id: ID!
+  business_entity_id: UUID!
+  created_at: DateTime!
+  updated_at: DateTime!
+  block_jobs_ids: [UUID!]!
+  can_modify_mission_expiration_delay: Boolean!
+  custom_form_url_to_fill_before_mission_acceptance: String
+  needs_talents_to_attest_not_employee: Boolean
+  talent_identity_verification: TalentIdentityVerification
+  need_validation_for_missions: Boolean
+  is_saas_enabled: Boolean!
+  activity_dashboard_enabled: Boolean!
+  can_upload_documents_on_mission: Boolean
+  enable_connection_confirmation: Boolean
+  contract_generation: Boolean
+  dpae_generation: Boolean
+  monthly_worked_minutes_before_validation: Int
+  no_slot_after_date: Date
+  enable_mission_creation_outstanding_amount_limit: Boolean!
+}
+
+union BusinessEntity = Group | Branch | Site
+
+enum BusinessEntityTypeEnum {
+  GROUP
+  BRANCH
+  SITE
+  PAYMENT_CORPORATION
+}
+
+type BusinessExternalContact {
+  id: UUID!
+  external_contact: ExternalContact!
+  jobs: [Job!]!
+  site_id: UUID!
+  contact_type: NetworkContactTypeEnum!
+  nb_minutes_worked_since_beginning_of_year: Int!
+}
+
+enum BusinessGroupAccountTypeEnum {
+  REGULAR
+  KEY_ACCOUNT
+}
+
+union BusinessNetworkContact = BusinessTalentContact | BusinessExternalContact
+
+enum BusinessPlan {
+  ESSENTIAL
+  GROUP
+}
+
+type BusinessRole {
+  id: UUID!
+  name: TranslationsDictionary!
+}
+
+type BusinessTalentContact {
+  talent_id: UUID!
+  talent: TalentOrDeletedResource!
+  skills(site_id: UUID!): [TalentSkill!]!
+  _id: ID!
+  is_favorite: Boolean!
+  is_blocklisted: Boolean!
+  jobs: [Job!]!
+  contact_type: NetworkContactTypeEnum!
+  team_names: [String!]!
+  site_id: UUID!
+  tag_ids: [UUID!]!
+  tags: [Tag!]!
+  nb_minutes_worked_since_beginning_of_year: Int!
+}
+
+type BusinessesNetworkFeed {
+  nodes: [BusinessNetworkContact!]!
+  total: Int!
+}
+
+union BusinessesNetworkFeedResult = BusinessesNetworkFeed | UserInputError
+
+scalar Byte
+
+type CanCreateMissionData {
+  can_create_mission: Boolean!
+  outstanding_amount: Int!
+  outstanding_amount_limit: Int!
+}
+
+union CanCreateMissionResult = CanCreateMissionData | NoMissionCreationOutstandingAmountLimit
+
+enum CandidateStageEnum {
+  CREATED
+  HIRED
+  DISQUALIFIED
+  OFFER
+  FEEDBACK
+  INTERVIEWING
+  APPLIED
+  SCHEDULE_INTERVIEW
+  SCHEDULE_PHONE_SCREEN
+  SOURCED
+  REFERRAL
+  RECRUITER
+  OTHER
+  UNKNOWN
+  REGISTERED
+}
+
+enum CandidateStageNameEnum {
+  UNKNOWN
+  APPLIED
+  TO_CALL
+  CALL_BOOKED
+  WFD
+  WFD_NO_ANSWER
+  WFD_NEVER_ANSWERED
+  CHECK_DOCUMENT
+  VALIDATED
+  CANDIDATE_VALIDATED
+  BLK_NO_ANSWER
+  BLK_NEVER_ANSWERED
+  BLK_NOT_AVAILABLE_TO_TALK
+  BLK_NEED_MORE_INFOS
+  BLK_INVALID_INFO
+  BLK_CALL_NEVER_BOOKED
+  BLK_CALL_TO_BOOK
+  BLK_JOB_NOT_SUPPORTED
+  BLK_ONBOARDING_IN_STANDBY
+  BLK_WAITING_FOR_VALIDATION
+  BLK_OUT_OF_ZONE
+  RFS_UNINTERESTED
+  RFS_CV_NOT_CONVINCING
+  RFS_CALL_NOT_CONVINCING
+  RFS_STATUS_NOT_PERMITTED
+  RFS_NOT_ELIGIBLE_TO_WORK
+  RFS_UNQUALIFIED
+  CREATED
+  TO_ACTIVATE
+  ACTIVATED
+  OLD_STAGE_NAME
+}
+
+type CandidateUpdatedBy {
+  user_id: UUID!
+  _id: ID!
+  type: String!
+}
+
+type Category {
+  id: UUID!
+  name: TranslationsDictionary!
+  picture_key: String
+  picture_url: String
+  index: Int!
+  updated_by: UpdatedBy
+}
+
+type CeilingStatusResult {
+  site_id: UUID!
+  talent_id: UUID!
+  remaining_days_before_ceiling_reached: Int!
+  total_days: Int!
+}
+
+type ChangedSlot {
+  id: UUID!
+  new: UUID!
+}
+
+type ClientsHasNotTheSameProviderError {
+  client_ids: [UUID!]!
+  provider_ids: [UUID!]!
+}
+
+enum CollectiveConventionEnum {
+  CCN_1951
+  CCN_1966
+  CCN_1996
+  CCN_2002
+  CCN_2010
+  CCN_2022
+}
+
+enum CompanyActiveEnum {
+  ACTIVE
+  INACTIVE
+  UNKNOWN
+}
+
+enum CompanyInfoAvailableEnum {
+  AVAILABLE
+  PARTIALLY_AVAILABLE
+  UNAVAILABLE
+  UNKNOWN
+}
+
+enum CompanyNameMatchEnum {
+  MATCH
+  MISMATCH
+  UNKNOWN
+}
+
+enum CompanyNumberValidityEnum {
+  INVALID
+  PRIVATE
+  FREELANCE
+  LINKED_TO_PAYMENT_METHOD_EXEMPTED_FOR_LAUNCH_MISSION
+  LINKED_TO_UNPAID_MISSIONS
+  VALID
+  UNABLE_TO_CHECK_WITH_PROVIDER
+}
+
+type CompletedBrigader {
+  updated_by: UpdatedBy
+}
+
+union ConfirmConnectionResult = ConfirmConnectionSuccess | NotFoundError | InvalidResourceStateError
+
+type ConfirmConnectionSuccess {
+  hash: String!
+  user_id: UUID!
+}
+
+enum ContactWithPhoneNumberTypeEnum {
+  EXTERNAL_CONTACT
+  TALENT
+  NONE
+}
+
+scalar ContentType
+
+enum ContractTypeEnum {
+  FREELANCE
+  TEMPORARY
+  INTERIM
+  CDDU
+}
+
+type CostsDetailsMetrics {
+  total_costs: MetricWithPercentageVariation!
+  total_invoiced_by_talents: Int!
+  average_hourly_price: Int!
+  total_service_fees: Int!
+}
+
+type Country {
+  updated_by: UpdatedBy
+}
+
+scalar CountryCode
+
+scalar CountryCodeAlpha2
+
+scalar CountryName
+
+input CreateDeviceInput {
+  token: String!
+  push_enabled: Boolean!
+}
+
+input CreateExternalContactInput {
+  first_name: String!
+  last_name: String!
+  phone_number: PhoneNumber!
+  type: ExternalContactTypeEnum!
+  job_ids: [UUID!]!
+  business_entities: [ExternalContactBusinessEntitiesInput!]!
+}
+
+input CreateExtractForBusinessInvoicesInput {
+  site_ids: [UUID!]!
+  period_start: Date!
+  period_end: Date!
+  types: [InvoiceTypeForBusinessExtractionEnum!]
+  payment_statuses: [PaymentStatusEnum!]
+}
+
+input CreateExtractForBusinessLegalDocumentsInput {
+  site_ids: [UUID!]!
+  period_start: Date!
+  period_end: Date!
+  brigader_id: UUID
+}
+
+union CreateManyMissionsResult = CreateManyMissionsSuccess | NotFoundError | UserInputError
+
+type CreateManyMissionsSuccess {
+  missions: [Mission!]!
+}
+
+input CreateMissionInput {
+  slots: [MissionSlotsInput!]!
+  business_id: UUID!
+  industry_id: UUID!
+  category_id: UUID!
+  job_id: UUID!
+  contract_type: ContractTypeEnum
+  description: String
+  tag_ids: [UUID!]
+  additional_invoice_details: String
+  purchase_order_number: String
+  favorite_talents_ids: [UUID!]
+  equipment_ids: [UUID!]
+  auto_cancel: Boolean
+  creator_id: UUID!
+  voucher_ids: [UUID!]
+  notify: Boolean
+  quote_id: UUID
+  manual_price: Int
+  manual_price_coefficient: Float
+  alternative_staffing: MissionAlternativeStaffingInput
+  site_address_id: UUID!
+  custom_expiration_delay: Int
+  manual_prices: ManualPricesInput
+  external_contacts: [ExternalContactInput!]
+  alternative_contract_staffing: AlternativeContractStaffingInput
+  creator_comment_for_validator: String
+  networks_contacts: MissionCreationNetworksContactsInput
+  yield_rate: Float
+  connection_confirmation_enabled: Boolean
+  multiple_talent_connection_confirmation: Boolean
+  display_price_to_external_contacts: Boolean
+}
+
+union CreateMissionResult = CreateMissionSuccess | NotFoundError | UserInputError
+
+type CreateMissionSuccess {
+  mission: Mission!
+}
+
+input CreateMissionTemplateInput {
+  template_name: String!
+  job_id: UUID
+  industry_id: UUID
+  category_id: UUID
+  mission_description: String
+  tag_ids: [UUID!]
+  equipment_ids: [UUID!]
+  time_slot: TimeSlotInput
+}
+
+input CreateNetworkInvitationForTalentInput {
+  business_entity_id: UUID!
+  talent_id: UUID!
+  skills: [NetworkInvitationSkillInput!]!
+  type: NetworkTypeEnum!
+}
+
+union CreateNetworkInvitationForTalentResult = NetworkInvitation | NotFoundError | AlreadyExistsError
+
+input CreateNetworkInvitationInput {
+  business_entity_id: UUID!
+  phone_number: PhoneNumber!
+  email: EmailAddress!
+  first_name: String!
+  last_name: String!
+  skills: [NetworkInvitationSkillInput!]!
+  type: NetworkTypeEnum!
+}
+
+union CreateNetworkInvitationResult = NetworkInvitation | AlreadyExistsError
+
+input CreateProviderInput {
+  country: String!
+  currency: String!
+  client_ids: [UUID!]!
+  bank_account: ProviderPaymentMethodInput!
+  owner: ProviderOwnerInput!
+}
+
+union CreateRegularizationResult = TalentRegularization | AgentRegularization | NotFoundError | RegularizationError
+
+input CreateSessionInput {
+  device_type: SessionDeviceTypeEnum!
+  device: CreateDeviceInput
+  version: String
+  user_agent: String
+  readonly: Boolean
+  tracking_ids: JSON
+}
+
+type CreateUserResult {
+  user: User!
+  passport: Passport!
+  token: String!
+}
+
+input CreateUserWithAppleInput {
+  data: ApplePassportInput!
+  session: CreateSessionInput!
+  user_consents: [UserConsentAgreementEnum!]
+}
+
+input CreateUserWithGoogleInput {
+  data: GooglePassportInput!
+  session: CreateSessionInput!
+  user_consents: [UserConsentAgreementEnum!]
+}
+
+input CreateUserWithPasswordInput {
+  data: PasswordPassportInput!
+  session: CreateSessionInput!
+  user_consents: [UserConsentAgreementEnum!]
+}
+
+input CreateUserWithPhoneNumberInput {
+  data: PhoneNumberPassportInput!
+  session: CreateSessionInput!
+  user_consents: [UserConsentAgreementEnum!]
+}
+
+input CreateUserWithTokenInput {
+  data: TokenPassportCreationInput!
+  session: CreateSessionInput!
+  user_consents: [UserConsentAgreementEnum!]
+}
+
+scalar Cuid
+
+scalar Currency
+
+scalar DID
+
+scalar Date
+
+input DateInterval {
+  start: DateTime
+  start_date: String
+  start_time: String
+  end: DateTime
+  end_date: String
+  end_time: String
+}
+
+scalar DateTime
+
+scalar DateTimeISO
+
+input DateTimeInterval {
+  start: DateTime
+  end: DateTime
+}
+
+union DeletePendingNetworkInvitationResult = DeletePendingNetworkInvitationSuccessResult | InvalidResourceStateError
+
+type DeletePendingNetworkInvitationSuccessResult {
+  success: Boolean!
+}
+
+type DeletedResource {
+  _id: ID!
+  id: UUID!
+}
+
+type DeletedUser {
+  user_id: UUID!
+}
+
+type Device {
+  _id: ID!
+  token: String!
+  number_of_errors: Int!
+  created_at: DateTime!
+  updated_at: DateTime!
+  push_enabled: Boolean!
+  updated_by: UpdatedBy
+}
+
+scalar DeweyDecimal
+
+type Dictionary {
+  updated_by: UpdatedBy
+}
+
+enum DictionaryTypeEnum {
+  DESISTEMENT_REASON
+  CANCELLATION_REASON
+  EXPIRATION_REASON
+  UNAVAILABILITY_REASON
+  VOUCHER_REASON
+  BUSINESS_SEGMENT
+  JOB_HARD_SKILL
+  PROFESSIONALISM_FEEDBACK
+  MANAGEMENT_FEEDBACK
+  WORK_CONDITIONS_FEEDBACK
+  MISSIONS_FEEDBACK
+  ZENDESK_TICKET_THEME
+  BRIGADER_SAFETY_ISSUE
+  BUSINESS_SAFETY_ISSUE
+  SUSPENSION_REASON
+  UNSUSPENSION_REASON
+  DEFAULT_BRANCH_CHILDREN_TYPE_NAME
+  MISSION_VALIDATION_REASON
+}
+
+enum DisabledJobOrigin {
+  FAILED_SKILLS_QUESTIONNAIRE
+  FAILED_LOWER_SKILLS_QUESTIONNAIRE
+}
+
+enum DisqualificationTypeEnum {
+  DISQUALIFIED_REGISTRANT_DUPLICATE_ACCOUNT
+  DIPLOMA_FRAUD
+  DOCUMENT_FRAUD
+  NOT_ALLOWED_TO_WORK_AS_SELF_EMPLOYED
+  LACK_OF_EXPERIENCE
+  LACK_OF_SOFT_SKILLS
+  LANGUAGE_LEVEL
+  MISBEHAVIOUR
+  JOBS_CUTS
+  PERMABANNED_ACCOUNT
+  EQUIPMENT
+  OTHER
+}
+
+enum DocumentCategories {
+  ID
+  PROOF_OF_ADDRESS
+  CV
+  PROOF_OF_COMPANY
+  SELFIE
+  SHARE_CODE
+  OTHER
+  CERTIFICATE
+  BANKING_INFORMATION
+  SOCIAL_SECURITY_PROOF
+  SELFIE_AND_PROFILE_PICTURE_COMPARISON
+  FRENCH_BILLING_DATA_CERTIFICATE
+  FOOD_SAFETY_CERTIFICATE
+  WORK_CERTIFICATES
+  RPPS
+  CRIMINAL_RECORD
+}
+
+enum DocumentProviderOrigin {
+  STRIPE
+  BRIGAD
+  SERVICE_BRIGADERS
+  SERVICE_INVOICES
+  SERVICE_TALENTS_ONBOARDING
+  TEMPORARY_CONTRACT_MISSIONS
+  ADDITIONAL_SHORT_TERM_CONTRACT_MISSIONS
+  NURSE_JOB
+  ALL_HEATHCARE_JOB
+}
+
+type DocumentSignature {
+  id: UUID!
+  document_id: UUID!
+  document_type: SignatureDocumentTypeEnum!
+  status: DocumentSignatureStatusEnum!
+  signer_url: URL!
+  document: MissionDocument!
+}
+
+enum DocumentSignatureStatusEnum {
+  ALL_GOOD
+  WAITING_FOR_AGENT
+  WAITING_FOR_TALENT
+  WAITING_FOR_BOTH
+}
+
+type DocumentSignaturesFeed {
+  nodes: [DocumentSignature!]!
+  total: Int!
+}
+
+enum DocumentStatusEnum {
+  PENDING
+  FAILED
+  VALIDATED
+}
+
+enum DocumentTypeEnum {
+  DRIVERS_LICENSE
+  IDENTITY_CARD
+  RESIDENCE_PERMIT
+  PASSPORT
+  PROOF_OF_ADDRESS
+  PROOF_OF_COMPANY
+  OTHER
+  CERTIFICATE
+  SELFIE
+  SHARE_CODE
+  BANKING_INFORMATION
+  SOCIAL_SECURITY_PROOF
+  SELFIE_AND_PROFILE_PICTURE_COMPARISON
+  CV
+  FRENCH_BILLING_DATA_CERTIFICATE
+  FOOD_SAFETY_CERTIFICATE
+  WORK_CERTIFICATES
+  RPPS
+  CRIMINAL_RECORD
+}
+
+enum DpaeStatusEnum {
+  NON_APPLICABLE
+  NEED_GENERATION
+  SUBMITTED
+}
+
+input DpaeSubmissionContractDetailsInput {
+  start_date: String!
+  start_time: String!
+  end_date: String!
+  end_time: String!
+  health_service: String!
+}
+
+input DpaeSubmissionEmployeeDetailsInput {
+  first_name: String!
+  last_name: String!
+  gender: TalentGenderEnum!
+  social_security_number: String!
+  birth_date: Date!
+  birth_department: String!
+  birth_city: String!
+}
+
+input DpaeSubmissionEmployerDetailsInput {
+  siret: String!
+  ape_code: String!
+  urssaf_code: String!
+  street: String!
+  city: String!
+  zip: String!
+  phone_number: PhoneNumber!
+}
+
+scalar Duration
+
+type DuringWorkingHours {
+  during_working_hours: Boolean!
+}
+
+type EUBankDetails {
+  bank_name: String
+  bic: String
+  iban: String!
+}
+
+input EditBusinessTalentContactInput {
+  contact_type: NetworkContactTypeEnum
+  skills: [NetworkInvitationSkillInput!]
+}
+
+union EditBusinessTalentContactResult = BusinessTalentContact | NotFoundError
+
+input EditExternalContactInput {
+  first_name: String
+  last_name: String
+  type: ExternalContactTypeEnum
+  job_ids: [UUID!]
+}
+
+union EditExternalContactResult = ExternalContact | NotFoundError
+
+input EditMissionTemplateInput {
+  template_name: String
+  job_id: UUID
+  industry_id: UUID
+  category_id: UUID
+  mission_description: String
+  tag_ids: [UUID!]
+  equipment_ids: [UUID!]
+  time_slot: TimeSlotInput
+}
+
+union EditMissionTemplateResult = MissionTemplate | NotFoundError
+
+input EditSessionInput {
+  device_type: SessionDeviceTypeEnum
+  device: CreateDeviceInput
+  version: String
+  user_agent: String
+  tracking_ids: JSON
+}
+
+scalar EmailAddress
+
+union EmbeddedDashboardsResult = EmbeddedMetabaseDashboardsResponse | NotFoundError
+
+type EmbeddedMetabaseDashboardsResponse {
+  token: String!
+}
+
+enum EntityTypeEnum {
+  GROUP
+  BRANCH
+  SITE
+  PAYMENT_CORPORATION
+}
+
+type Equipment {
+  id: UUID!
+  name: TranslationsDictionary!
+  updated_by: UpdatedBy
+}
+
+enum ErrorTypeEnum {
+  NOT_FOUND
+  BASE_ERROR
+  ALREADY_EXISTS
+  USER_INPUT_ERROR
+  ACCESS_ERROR
+}
+
+enum EventTypeEnum {
+  MISSION
+  UNAVAILABILITY
+  PENDING_MISSION_CREATION_WITH_BUSINESS
+}
+
+type ExternalContact {
+  id: UUID!
+  type: ExternalContactTypeEnum!
+  first_name: String!
+  last_name: String!
+  name: String!
+  phone_number: PhoneNumber!
+  jobs: [Job!]!
+  job_ids: [UUID!]!
+  status: ExternalContactStatusEnum!
+  team_name: String
+}
+
+input ExternalContactBusinessEntitiesInput {
+  entity_id: UUID!
+  entity_type: BusinessEntityTypeEnum!
+}
+
+input ExternalContactInput {
+  name: String!
+  phone_number: PhoneNumber!
+}
+
+union ExternalContactOrDeletedResource = ExternalContact | DeletedResource
+
+enum ExternalContactStatusEnum {
+  PENDING
+  VALIDATED
+}
+
+enum ExternalContactTypeEnum {
+  EMPLOYEE
+  EXTERNAL
+}
+
+enum ExternalContactUserStatusEnum {
+  HAS_TALENT_ACCOUNT
+  HAS_TALENT_ACCOUNT_IN_BUSINESS_FAVORITE_TALENT_LIST
+  HAS_NO_TALENT_ACCOUNT
+}
+
+type ExternalContactsWithJobIdCountResult {
+  employees_count: Int!
+  external_count: Int!
+}
+
+enum ExtractFileTypeEnum {
+  INVOICE
+  CONTRACT
+  SUMMARY
+  DOCUMENT
+  SHORT_TERM_CONTRACT
+}
+
+type ExtractForBusinessLegalDocumentsFeed {
+  nodes: [ExtractForBusinessLegalDocumentsResult!]!
+  total: Int!
+}
+
+type ExtractForBusinessLegalDocumentsResult {
+  _id: ID!
+  brigader_id: UUID!
+  days_worked: Int!
+  date_ceilling_reached: DateTime
+  has_reached_ceilling: Boolean!
+  number_of_invoices: Int!
+  number_of_purchase_contract: Int!
+  number_of_proof_of_company: Int!
+  number_of_short_term_contracts: Int!
+}
+
+enum ExtractStatusEnum {
+  FAIL
+  CREATING_ARCHIVE
+  DONE
+}
+
+enum FCMNotificationTypeEnum {
+  NAVIGATE
+}
+
+enum FieldErrorEnum {
+  NOT_FOUND
+  ALREADY_USED
+  WRONG_COMBINATION
+  NOT_AUTHORIZED
+  SHOULD_NOT_BE_EMPTY
+  NOT_SUPPORTED
+}
+
+enum FileExtractTypeEnum {
+  INVOICES_PAYMENT_CORP
+  LEGAL_DOCUMENTS_BUSINESS
+  INVOICES_BUSINESS
+  INVOICES_BUSINESS_ADMIN
+  INVOICES_TALENT
+  INVOICES_TALENT_ADMIN
+  ONLY_ZIP_INVOICES_BUSINESS_ADMIN
+}
+
+enum FileKind {
+  FRONT
+  BACK
+}
+
+enum FileProvider {
+  AWS
+  PERSONA
+}
+
+input FilterBusinessNetworkInput {
+  job_ids: [UUID!]
+  tag_ids: [UUID!]
+  only_favorite_talents: Boolean
+  only_blocklisted_talents: Boolean
+  types: [NetworkContactTypeEnum!]
+  exclude_pending_external_contacts: Boolean
+  external_contact_status: [ExternalContactStatusEnum!]
+  talent_contract_types: [ContractTypeEnum!]
+}
+
+input FilterSharedBusinessesNetworkInput {
+  min_distance: Int
+  max_distance: Int
+  job_ids: [UUID!]
+}
+
+input FiltersExtractForBusinessLegalDocumentsInput {
+  period_start: Date!
+  period_end: Date!
+  brigader_name: String
+}
+
+type FormattedDate {
+  date: String!
+  date_french_format: String!
+  year: String!
+  month: String!
+  day: String!
+  time: String!
+  hour: String!
+  minute: String!
+  second: String!
+  timezone: Timezone!
+  iso: String!
+  timestamp: Int!
+  utc_timestamp: Int!
+  formatted: TranslationsDictionary!
+  day_of_week: TranslationsDictionary!
+}
+
+type FreelanceJobDetails {
+  job_id: UUID!
+  blocked_by_site(site_id: UUID!): Boolean!
+  _id: ID!
+  name: TranslationsDictionary!
+  upgrade_job_id: UUID
+  downgrade_job_id: UUID
+}
+
+scalar GUID
+
+union GenerateMissionShortTermContractPreviewResult = GenerateMissionShortTermContractPreviewSuccessResult | NotFoundError | InvalidResourceStateError
+
+type GenerateMissionShortTermContractPreviewSuccessResult {
+  url: URL!
+}
+
+union GenerateMissionShortTermContractResult = GenerateMissionShortTermContractSuccessResult | NotFoundError | InvalidResourceStateError
+
+type GenerateMissionShortTermContractSuccessResult {
+  success: Boolean!
+}
+
+scalar GeoJSON
+
+scalar Geometry
+
+type GooglePassport {
+  id: UUID!
+  created_at: DateTime!
+  updated_at: DateTime!
+  name: PassportNameEnum!
+  data: GooglePassportData!
+  user_id: UUID!
+  updated_by: UpdatedBy
+}
+
+type GooglePassportData {
+  id: String!
+  email: EmailAddress!
+  name: String
+  locale: String
+  picture: String
+  given_name: String
+  family_name: String
+  access_token: String!
+  verified_email: Boolean
+}
+
+input GooglePassportInput {
+  access_token: String!
+}
+
+type Group {
+  id: UUID!
+  name: String!
+  business_plan: BusinessPlan!
+  sites_with_shared_network_enabled: [Site!]!
+}
+
+type GroupInvitation {
+  id: UUID!
+  email: EmailAddress!
+  first_name: String
+  last_name: String
+  status: GroupInvitationStatusEnum!
+  site_ids: [UUID!]!
+  access_ids: [UUID!]!
+  role: BusinessRole!
+}
+
+enum GroupInvitationStatusEnum {
+  PENDING
+  PENDING_VALIDATION
+  ACCEPTED
+  CANCELED
+  FAILED
+}
+
+enum GroupVerticalEnum {
+  HOSPITALITY
+  HEALTHCARE
+  CONTRACT_CATERING
+  MEDICO_SOCIAL
+  SANITARY
+  CITY_MEDECINE
+  HOME_ASSISTANCE
+}
+
+scalar HSL
+
+scalar HSLA
+
+scalar HexColorCode
+
+scalar Hexadecimal
+
+enum HospitalityJobTypeEnum {
+  FRONT_OF_HOUSE
+  BACK_OF_HOUSE
+  OTHER
+}
+
+type HoursInvoicedMetricWithPercentageVariation {
+  current_period_hours_metric: Int!
+  current_period_minutes_metric: Int!
+  metric_percentage_variation: Int
+}
+
+type HoursMetricWithPercentageVariation {
+  current_period_hours_metric: Int!
+  current_period_minutes_metric: Int!
+  metric_percentage_variation: Int
+}
+
+scalar IBAN
+
+scalar IP
+
+scalar IPCPatent
+
+scalar IPv4
+
+scalar IPv6
+
+scalar ISBN
+
+scalar ISO8601Duration
+
+input ImpactedSlots {
+  id: UUID!
+  is_valid: Boolean!
+  new_slot: OfferSlotsInput
+}
+
+type Industry {
+  id: UUID!
+  name: TranslationsDictionary!
+  default_category_id: UUID
+  index: Int!
+  updated_by: UpdatedBy
+}
+
+type IndustryWithCategories {
+  _id: ID!
+  industry_id: UUID!
+  category_ids: [UUID!]!
+  categories: [Category!]!
+  industry: Industry!
+}
+
+type InterimJobDetails {
+  _id: ID!
+  job_id: UUID!
+  name: TranslationsDictionary!
+}
+
+type InvalidResourceStateError implements BaseError {
+  type: ErrorTypeEnum!
+  ressource: String!
+  invalid_key: String!
+  expected_values: [String!]!
+  current_value: String!
+  identifier: String
+}
+
+type InvoiceBundleTarget {
+  bundle_id: UUID!
+  entity_recipient_id: UUID!
+  entity_recipient: BusinessEntity
+  _id: ID!
+  number_of_missions: Int!
+}
+
+enum InvoiceCurrencyEnum {
+  EUR
+  GBP
+}
+
+union InvoiceDetails = InvoiceDetailsForShortTermMonthlyBusinessCommission | InvoiceDetailsForShortTermMonthlyCancellationBusinessCommission | InvoiceDetailsForFreelanceMission | InvoiceDetailsForFreelanceMissionWithoutHourlyPrice | InvoiceDetailsForCommitmentBonus | InvoiceDetailsForExceptionalCharge | InvoiceDetailsForBusinessCommission | InvoiceDetailsForCommissionReduction | InvoiceDetailsForMonth
+
+type InvoiceDetailsForBusinessCommission {
+  _id: ID!
+  linked_invoice_number: String
+  price: Int!
+}
+
+type InvoiceDetailsForCommissionReduction {
+  _id: ID!
+  rate: Float!
+  amount: Int!
+}
+
+type InvoiceDetailsForCommitmentBonus {
+  _id: ID!
+  commitment_bonus_price: Int!
+}
+
+type InvoiceDetailsForExceptionalCharge {
+  _id: ID!
+  exceptional_charge_price: Int!
+}
+
+type InvoiceDetailsForFreelanceMission {
+  _id: ID!
+  job: Job!
+  total_minutes_worked: Int!
+  hourly_price: Int!
+  price: Int!
+  start_date: Date!
+  end_date: Date!
+}
+
+type InvoiceDetailsForFreelanceMissionWithoutHourlyPrice {
+  _id: ID!
+  job: Job!
+  price: Int!
+  mission_start_date: Date!
+  mission_end_date: Date!
+}
+
+type InvoiceDetailsForMonth {
+  _id: ID!
+  month: String!
+  price: Int!
+}
+
+type InvoiceDetailsForShortTermMonthlyBusinessCommission {
+  _id: ID!
+  job: Job!
+  missions: [Mission!]!
+  number_of_days: Int!
+  price: Int!
+  price_for_range: Int!
+}
+
+type InvoiceDetailsForShortTermMonthlyCancellationBusinessCommission {
+  _id: ID!
+  job: Job!
+  missions: [Mission!]!
+  number_of_missions: Int!
+  price: Int!
+}
+
+type InvoiceEmitterOrRecipientInformations {
+  name: String!
+  company_reference: String
+  vat_reference: String
+  street: String!
+  city: String!
+  zip: String!
+  country: String!
+  billing_code: String
+}
+
+type InvoiceForAgentList {
+  id: UUID!
+  type: InvoiceTypeEnum!
+  target_id: UUID!
+  target: InvoiceTarget!
+  invoiced_at: DateTime!
+  invoice_number: String!
+  amount_invoiced: Int!
+  total_amount_to_pay_to_be_marked_as_paid: Int!
+  currency: String!
+  redeemed_by_invoice_number: String
+  redeemed_for_invoice_number: String
+  url: URL
+  rest_to_pay_amount: Int
+}
+
+type InvoiceForRendering {
+  id: UUID!
+  type: InvoiceTypeEnum!
+  credit_note: Boolean!
+  invoice_number: String!
+  invoiced_at: DateTime!
+  payment_date: DateTime!
+  emitter: InvoiceEmitterOrRecipientInformations!
+  recipient: InvoiceEmitterOrRecipientInformations!
+  details: [InvoiceDetails!]!
+  summary: [InvoiceSummary!]!
+  currency: InvoiceCurrencyEnum!
+  price_excluding_vat: Int!
+  price_including_vat: Int!
+  voucher_amount: Int!
+  voucher_reference: String
+  amount_to_pay: Int!
+  vat_rate: Int!
+  vat_amount: Int!
+  bank_details: BankDetails
+  additional_details: String
+  purchase_order: String
+}
+
+union InvoiceForRenderingResult = InvoiceForRendering | NotFoundError | BadRequestError
+
+type InvoiceMissionTarget {
+  _id: ID!
+  mission: Mission!
+}
+
+enum InvoiceRecipientChannelEnum {
+  EMAIL
+}
+
+enum InvoiceRecipientFrequencyEnum {
+  WEEKLY
+  MONTHLY
+  ON_EVENT
+}
+
+type InvoiceShortTermCommissionTarget {
+  _id: ID!
+  number_of_missions: Int!
+  site: Site!
+}
+
+union InvoiceSummary = InvoiceSummaryForShortTermMonthlyBusinessCommission | MissionDetailsForMonthlyCommission
+
+type InvoiceSummaryForShortTermMonthlyBusinessCommission {
+  _id: ID!
+  talent_name: String!
+  site_name: String!
+  start_date: Date!
+  end_date: Date!
+  number_of_days: Int!
+}
+
+union InvoiceTarget = InvoiceMissionTarget | InvoiceBundleTarget | InvoiceShortTermCommissionTarget | UnknownTargetError
+
+enum InvoiceTypeEnum {
+  CANCELLATION_FEE
+  CANCELLATION_FEE_COMMISSION
+  BRIGAD_CANCELLATION_FEE
+  CLIENT
+  COMMISSION
+  PREFERENTIAL_PAYMENT_FEE
+  BUSINESS_COMMISSION
+  CANCELLATION_FEE_BUSINESS_COMMISSION
+  MONTHLY_BUSINESS_COMMISSION
+  SHORT_TERM_MONTHLY_BUSINESS_COMMISSION
+  SHORT_TERM_MONTHLY_CANCELLATION_BUSINESS_COMMISSION
+  REBATE
+}
+
+enum InvoiceTypeForBusinessExtractionEnum {
+  CANCELLATION_FEE
+  CANCELLATION_FEE_BUSINESS_COMMISSION
+  CLIENT
+  BUSINESS_COMMISSION
+  MONTHLY_BUSINESS_COMMISSION
+  SHORT_TERM_MONTHLY_BUSINESS_COMMISSION
+  SHORT_TERM_MONTHLY_CANCELLATION_BUSINESS_COMMISSION
+  PREFERENTIAL_PAYMENT_FEE
+  REBATE
+}
+
+enum InvoiceTypeForExtractionEnum {
+  CANCELLATION_FEE
+  CANCELLATION_FEE_COMMISSION
+  BRIGAD_CANCELLATION_FEE
+  CLIENT
+  COMMISSION
+  PREFERENTIAL_PAYMENT_FEE
+}
+
+input InvoicesForListFilters {
+  from_date: Date
+  to_date: Date
+  types: [InvoiceTypeEnum!]
+  payment_statuses: [PaymentStatusEnum!]
+}
+
+scalar JSON
+
+scalar JSONObject
+
+scalar JWT
+
+type Job {
+  id: UUID!
+  generic_name: TranslationsDictionary
+  name: TranslationsDictionary!
+  updated_by: UpdatedBy
+}
+
+type JobDetails {
+  _id: ID!
+  job_id: UUID!
+  index: Int!
+  name: TranslationsDictionary!
+  freelance: FreelanceJobDetails
+  short_term: ShortTermJobDetails
+  interim: InterimJobDetails
+}
+
+enum JobSkillLevel {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+scalar LCCSubclass
+
+enum LanguageEnum {
+  FR_FR
+  EN_GB
+}
+
+scalar Latitude
+
+scalar LocalDate
+
+scalar LocalDateTime
+
+scalar LocalEndTime
+
+scalar LocalTime
+
+scalar Locale
+
+scalar Long
+
+scalar Longitude
+
+scalar MAC
+
+input ManualPricesInput {
+  break_hourly_price: Int!
+  hourly_price: Int!
+  night_hourly_price: Int!
+  weekend_hourly_price: Int!
+  minimum_price_by_slot: Int
+  commission_percentage: Float
+  business_commission_percentage: Float
+}
+
+type MatchmakingProposition {
+  _id: ID!
+  user_id: UUID!
+  hash: String!
+  partial_availabilities_agent_status: PropositionPartialAvailabilityAgentStatusEnum
+}
+
+type MatchmakingSlot {
+  starts_at: DateTime!
+  starts_at_formatted: FormattedDate!
+  start_date: String!
+  start_time: String!
+  ends_at: DateTime!
+  ends_at_formatted: FormattedDate!
+  end_date: String!
+  end_time: String!
+  break_minutes: Int!
+}
+
+input MatchmakingSlotInput {
+  start_date: String!
+  end_date: String!
+  start_time: String!
+  end_time: String!
+  break_minutes: Int!
+}
+
+enum MetadataScopeEnum {
+  COUNTRY
+  ZONE
+}
+
+type MetricWithPercentageVariation {
+  current_period_metric: Int!
+  metric_percentage_variation: Int
+}
+
+type MetricWithVariation {
+  current_period_metric: Int!
+  metric_variation: Int!
+}
+
+type MetricsForPerformanceActivityData {
+  period_end: Date!
+  period_start: Date!
+  previous_period_start: Date!
+  previous_period_end: Date!
+  missions_planned_and_done: MetricWithPercentageVariation!
+  hours_planned_and_done: HoursMetricWithPercentageVariation!
+  costs_details: CostsDetailsMetrics!
+  sites_active: MetricWithVariation!
+  satisfaction_rate_business: SatisfactionMetric
+  satisfaction_rate_talent: SatisfactionMetric
+  connection_rate: MetricWithPercentageVariation
+  average_mission_duration: HoursMetricWithPercentageVariation!
+  average_time_between_mission_creation_and_start: HoursMetricWithPercentageVariation!
+}
+
+input MetricsForPerformanceActivityInput {
+  site_ids: [UUID!]!
+  period_end: Date!
+  period_start: Date!
+  job_ids: [UUID!]!
+}
+
+union MetricsForPerformanceActivityResultV3 = MetricsForPerformanceActivityData | NoMetricsDuringPeriod
+
+type Mission {
+  id: UUID!
+  staffed_brigader_id: UUID
+  talent: TalentOrDeletedResource
+  creator_id: UUID!
+  creator: AgentOrDeletedResource!
+  contract_type: ContractTypeEnum!
+  business_id: UUID!
+  dpae_submitted_at: DateTime
+  dpae_status: DpaeStatusEnum!
+  site: SiteOrDeletedResource
+  contract_url: URL
+  short_term_contract: MissionDocument
+  _id: ID!
+  created_at: DateTime!
+  updated_at: DateTime!
+  status: MissionStatusEnum!
+  address_id: UUID!
+  latitude: Float!
+  longitude: Float!
+  zone_id: UUID!
+  industry_id: UUID!
+  category_id: UUID!
+  job_id: UUID!
+  job: Job!
+  starts_at: DateTime!
+  ends_at: DateTime!
+  slot_ids: [UUID!]!
+  number_of_slots: Int!
+  description: String
+  internal_description: String
+  auto_cancel: Boolean!
+  monthly_ceiling: Boolean!
+  timezone: Timezone!
+  hash: String!
+  whitelist: [UUID!]!
+  expired_whitelist: Boolean!
+  tag_ids: [UUID!]!
+  equipment_ids: [UUID!]!
+  requested_cancellation_at: DateTime
+  cancellation_reason_id: UUID
+  expiration_reason_id: UUID
+  requested_no_show_at: DateTime
+  staffed_at: DateTime
+  requested_desistement_at: DateTime
+  desistement_reason_id: UUID
+  other_reason_comment: String
+  payment_method: MissionPaymentMethodEnum!
+  referent_offer_id: UUID
+  direct_referent_offer_id: UUID
+  currency: String!
+  invoiced_at: DateTime
+  order_number: String
+  additional_invoice_details: String
+  voucher_id: UUID
+  voucher: Voucher
+  notify: Boolean!
+  quote_id: UUID
+  source: MissionSourceEnum!
+  splited_or_duplicated_at: DateTime
+  validator_id: UUID
+  validation_mechanism: MissionValidationMechanismEnum
+  alternative_staffing: MissionAlternativeStaffing!
+  total_worked_minutes: Int!
+  total_break_minutes: Int!
+  vertical: VerticalEnum!
+  connector_id: UUID
+  validation_processed_at: DateTime
+  is_from_level_up_proposition: Boolean!
+  required_hard_skills_ids: [UUID!]
+  out_of_scope_hard_skills_ids: [UUID!]
+  site_address_id: UUID
+  site_address: SiteAddress
+  short_id: ID
+  travel_time: TravelTime
+  custom_expiration_delay: Int
+  price_details: MissionPriceDetails
+  pricing: Pricing!
+  talent_pricing: PricingForConnectedTalent
+  origin_type: MissionOriginTypeEnum!
+  updated_by: UpdatedBy
+  launched_with_custom_business_commission: Boolean!
+  external_contacts_ids: [UUID!]!
+  expired_external_contacts_list: Boolean!
+  staffed_by_external_contact: Boolean
+  short_term_contract_paid_at: DateTime
+  talent_identity_verification_status: TalentIdentityVerificationStatusEnum
+  talent_identity_verification_submission_timerange: TalentIdentityVerificationSubmissionTimerange
+  creator_comment_for_validator: String
+  purchase_order_number: String
+  connection_confirmation_enabled: Boolean!
+  display_price_to_external_contacts: Boolean!
+  regularizations: [Regularization!]!
+  pending_regularization: Regularization
+}
+
+type MissionAlternativeStaffing {
+  _id: ID!
+  split: Boolean!
+  upgrade_job_id: UUID
+  downgrade_job_id: UUID
+}
+
+input MissionAlternativeStaffingInput {
+  split: Boolean!
+  upgrade_job_id: UUID
+  downgrade_job_id: UUID
+}
+
+input MissionCreationNetworksContactsInput {
+  employee: NetworkContactsInput!
+  external: NetworkContactsInput!
+  brigad_talents: NetworkContactsInput!
+}
+
+type MissionDetailsForMonthlyCommission {
+  _id: ID!
+  linked_invoice_number: String!
+  talent_name: String!
+  site_name: String!
+  start_date: Date!
+  end_date: Date!
+  mission_price: Int!
+  commission_price_excl_vat: Int!
+  commission_price_incl_vat: Int!
+}
+
+type MissionDocument {
+  id: UUID!
+  signature: DocumentSignature
+  offer_id: UUID!
+  type: OfferDocumentTypeEnum!
+  created_at: DateTime!
+  updated_at: DateTime!
+  mission: Mission!
+}
+
+type MissionFavoritesAndContactsToReach {
+  user_id: UUID!
+  type: MissionFavoritesAndContactsToReachTypeEnum!
+  talent: TalentOrDeletedResource
+  contact_or_employee: ExternalContactOrDeletedResource
+  _id: ID!
+  answer: PropositionAnswerEnum
+  answered_at: DateTime
+}
+
+enum MissionFavoritesAndContactsToReachTypeEnum {
+  FAVORITE
+  EMPLOYEE
+  EXTERNAL_CONTACT
+}
+
+union MissionOrNotFound = Mission | NotFoundError
+
+union MissionOrRequest = Mission | TalentMissionRequest
+
+enum MissionOriginTypeEnum {
+  TRADITIONAL_AGENT_CREATION
+  BRIGADER_OFFER_REQUEST
+  TALENT_NETWORK_CALENDAR
+}
+
+enum MissionPaymentMethodEnum {
+  NORMAL
+  EXEMPTED
+  EXEMPTED_FOR_LAUNCH
+}
+
+type MissionPriceDetails {
+  day_price: Float!
+  day_minutes: Int!
+  night_price: Float!
+  night_minutes: Int!
+  weekend_price: Float!
+  weekend_minutes: Int!
+  break_price: Int!
+  break_minutes: Int!
+}
+
+type MissionShortTermContractConditionalDisplay {
+  depends_on: String!
+  needs_value: String!
+}
+
+type MissionShortTermContractFormField {
+  name: String
+  key: String!
+  value: String
+  category: ShortTermContractTemplateVariableCategoryEnum!
+  conditional_display: [MissionShortTermContractConditionalDisplay!]
+}
+
+input MissionShortTermContractFormFieldInput {
+  name: String
+  key: String!
+  value: String!
+  category: ShortTermContractTemplateVariableCategoryEnum!
+}
+
+union MissionShortTermContractFormResult = MissionShortTermContractFormSuccessResult | NotFoundError | InvalidResourceStateError
+
+type MissionShortTermContractFormSuccessResult {
+  form: [MissionShortTermContractFormField!]!
+  multi_select_fields: [MissionShortTermContractMultiSelectField!]!
+}
+
+type MissionShortTermContractMultiSelectField {
+  name: String
+  key: String!
+  values: [String!]!
+  conditional_display: [MissionShortTermContractConditionalDisplay!]
+}
+
+input MissionSlotsInput {
+  start_date: Date!
+  end_date: Date!
+  start_time: String!
+  end_time: String!
+  break_minutes: Int!
+}
+
+enum MissionSourceEnum {
+  CREATION
+  SPLIT
+  DUPLICATION
+}
+
+enum MissionStatusEnum {
+  PENDING_VALIDATION
+  REFUSED_VALIDATION
+  INSEARCH
+  EXPIRED
+  CANCELED
+  ACCEPTED
+  DONE
+  PENDING_CONNECTION_CONFIRMATION
+}
+
+type MissionTemplate {
+  id: UUID!
+  business_entity_id: UUID!
+  template_name: String!
+  job_id: UUID
+  job: Job
+  industry_id: UUID
+  industry: Industry
+  category_id: UUID
+  category: Category
+  mission_description: String
+  tag_ids: [UUID!]!
+  tags: [Tag!]!
+  equipment_ids: [UUID!]!
+  equipments: [Equipment!]!
+  time_slot: TimeSlot
+  creator_id: UUID
+  creator: Agent
+}
+
+type MissionValidationCeilingForSiteData {
+  monthly_worked_minutes_before_validation: Int!
+  validation_ceiling_reached: Boolean!
+}
+
+union MissionValidationCeilingForSiteResult = MissionValidationCeilingForSiteData | NoMissionValidationCeiling
+
+union MissionValidationCriteriaForSiteResult = OutsideWorkingHoursCriteria | DuringWorkingHours | NoValidationCriteria
+
+enum MissionValidationMechanismEnum {
+  MANUAL
+  AUTOMATIC_PENDING
+  AUTOMATIC
+}
+
+type MissionsFeed {
+  nodes: [Mission!]!
+  total: Int!
+}
+
+type MissionsOrRequestsFeed {
+  nodes: [MissionOrRequest!]!
+  total: Int!
+}
+
+type MissionsToReviewFeed {
+  nodes: [Mission!]!
+  total: Int!
+}
+
+enum MonthEnum {
+  JANUARY
+  FEBRUARY
+  MARCH
+  APRIL
+  MAY
+  JUNE
+  JULY
+  AUGUST
+  SEPTEMBER
+  OCTOBER
+  NOVEMBER
+  DECEMBER
+}
+
+type Mutation {
+  showInterestForShortTermContractGeneration: Boolean!
+  showInterestForExternalNetwork: Boolean!
+  upsertBusinessConfiguration(data: UpsertBusinessConfigurationInput!): UpsertBusinessConfigurationResult!
+  createExternalContact(input: CreateExternalContactInput!): ExternalContact!
+  deleteExternalContact(id: UUID!, business_entities: [ExternalContactBusinessEntitiesInput!]!): Boolean!
+  editExternalContact(id: UUID!, input: EditExternalContactInput!): EditExternalContactResult!
+  acceptNetworkApplication(data: AcceptNetworkApplicationInput!): Boolean!
+  refuseNetworkApplication(application_id: UUID!): Boolean!
+  createS3LinkToUploadNetworkContactsImport(business_entity_id: UUID!): URL!
+  enableSharingOfNetworkWithGroup(site_ids: [UUID!]!): Boolean!
+  disableSharingOfNetworkWithGroup(site_ids: [UUID!]!): Boolean!
+  createNetworkInvitation(input: CreateNetworkInvitationInput!): CreateNetworkInvitationResult!
+  createNetworkInvitationForTalent(input: CreateNetworkInvitationForTalentInput!): CreateNetworkInvitationForTalentResult!
+  deletePendingNetworkInvitation(id: UUID!): DeletePendingNetworkInvitationResult!
+  editBusinessTalentContact(talent_id: UUID!, site_id: UUID!, input: EditBusinessTalentContactInput!): EditBusinessTalentContactResult!
+  removeBusinessTalentContactFromSiteNetwork(talent_id: UUID!, site_id: UUID!): Boolean!
+  dispatch(name: String!, data: JSON!): JSON
+  dispatchData(name: String!, data: JSON!): JSON
+  createExtractForBusinessLegalDocuments(input: CreateExtractForBusinessLegalDocumentsInput!): Boolean!
+  createExtractForBusinessInvoices(input: CreateExtractForBusinessInvoicesInput!): Boolean!
+  answerMatchmakingPropositionPartialAvailability(proposition_token: String!, status: PropositionPartialAvailabilityAgentStatusEnum!): AnswerMatchmakingPropositionPartialAvailabilityResult!
+  confirmConnectionV2(hash: String!, user_id: UUID!): ConfirmConnectionResult!
+  refuseConnectionV2(hash: String!, user_id: UUID!): RefuseConnectionResult!
+  acceptTalentMissionRequestAsValidator(id: UUID!): TalentMissionRequest!
+  refuseTalentMissionRequestAsValidator(id: UUID!): TalentMissionRequest!
+  submitDpae(mission_id: UUID!, input: SubmitDpaeInput!): SubmitDpaeResult!
+  createMissionTemplate(business_entity_id: UUID!, input: CreateMissionTemplateInput!): MissionTemplate!
+  editMissionTemplate(template_id: UUID!, input: EditMissionTemplateInput!): EditMissionTemplateResult!
+  deleteMissionTemplate(template_id: UUID!): Boolean!
+  updateTalentIdentityVerificationStatus(mission_id: UUID!, talent_identity_verification_status: TalentIdentityVerificationStatusEnum!): UpdateTalentIdentityVerificationStatusResult!
+  validateMission(mission_id: UUID!): ValidationResult!
+  refuseMission(mission_id: UUID!): ValidationResult!
+  createManyMissions(data: CreateMissionInput!, count: Int!): CreateManyMissionsResult!
+  createFirstExperienceMission(data: CreateMissionInput!): CreateMissionResult!
+  confirmConnection(mission_id: UUID!): MissionOrNotFound!
+  refuseConnection(mission_id: UUID!): MissionOrNotFound!
+  createRegularization(input: createRegularizationInput!): CreateRegularizationResult!
+  generateMissionShortTermContract(mission_id: UUID!, fields: [MissionShortTermContractFormFieldInput!]!): GenerateMissionShortTermContractResult!
+  generateMissionShortTermContractPreview(mission_id: UUID!, fields: [MissionShortTermContractFormFieldInput!]!): GenerateMissionShortTermContractPreviewResult!
+  createPaymentIntentWithAllUnpaidMissions(site_id: UUID!): PaymentIntent
+  synchronizeUnpaidMissionsStatusByPaymentIntentId(payment_intent_id: String!): PaymentIntent
+  createProvider(data: CreateProviderInput!): ProviderResult!
+}
+
+type NeedAtLeastOneRequirementError {
+  requirements: [String!]!
+}
+
+scalar NegativeFloat
+
+scalar NegativeInt
+
+type NetworkApplication {
+  id: UUID!
+  business_entity_id: UUID!
+  talent: Talent!
+  skills: [NetworkApplicationSkill!]!
+  status: NetworkApplicationStatus!
+  distance_to_business_in_meter: Int
+}
+
+type NetworkApplicationSkill {
+  job_id: UUID!
+  job: Job!
+  tag_ids: [UUID!]!
+  tags: [Tag!]!
+}
+
+input NetworkApplicationSkillInput {
+  job_id: UUID!
+  tag_ids: [UUID!]!
+}
+
+enum NetworkApplicationStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+enum NetworkContactTypeEnum {
+  TALENT
+  EXTERNAL_CONTACT
+  EMPLOYEE
+}
+
+input NetworkContactsInput {
+  enabled: Boolean!
+  user_ids: [UUID!]
+}
+
+type NetworkInvitation {
+  id: UUID!
+  phone_number: PhoneNumber!
+  email: EmailAddress
+  first_name: String!
+  last_name: String!
+  type: NetworkTypeEnum!
+  skills: [NetworkInvitationSkill!]!
+  business_entity_id: UUID!
+  status: NetworkInvitationStatusEnum!
+}
+
+type NetworkInvitationFeed {
+  total: Int!
+  nodes: [NetworkInvitation!]!
+}
+
+input NetworkInvitationFiltersInput {
+  status: [NetworkInvitationStatusEnum!]
+}
+
+type NetworkInvitationSkill {
+  job_id: UUID!
+  job: Job!
+  tag_ids: [UUID!]!
+}
+
+input NetworkInvitationSkillInput {
+  job_id: UUID!
+  tag_ids: [UUID!]!
+}
+
+enum NetworkInvitationStatusEnum {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+enum NetworkTypeEnum {
+  EMPLOYEE
+  EXTERNAL_CONTACT
+}
+
+type NoMetricsDuringPeriod {
+  no_metrics_during_period: Boolean!
+}
+
+type NoMissionCreationOutstandingAmountLimit {
+  no_mission_creation_outstanding_amount_limit: Boolean!
+}
+
+type NoMissionValidationCeiling {
+  no_mission_validation_ceiling: Boolean!
+}
+
+type NoValidationCriteria {
+  no_validation_criteria: Boolean!
+}
+
+scalar NonEmptyString
+
+scalar NonNegativeFloat
+
+scalar NonNegativeInt
+
+scalar NonPositiveFloat
+
+scalar NonPositiveInt
+
+type NotFoundError implements BaseError {
+  type: ErrorTypeEnum!
+  ressource: String!
+  identifiers: [String!]!
+}
+
+scalar ObjectID
+
+enum OfferDocumentTypeEnum {
+  JUSTIFICATIVE
+  PURCHASE_ORDER
+  SHORT_TERM_CONTRACT
+}
+
+input OfferSlotsInput {
+  start_date: String!
+  end_date: String!
+  start_time: String!
+  end_time: String!
+  break_minutes: Int!
+}
+
+enum OfferValidationMechanismEnum {
+  MANUAL
+  AUTOMATIC_PENDING
+  AUTOMATIC
+}
+
+type OutsideWorkingHoursCriteria {
+  maximum_duration: Int!
+  maximum_start_in_days: Int!
+}
+
+type PaginatedInvoiceForAgentList {
+  total: Int!
+  nodes: [InvoiceForAgentList!]!
+}
+
+input PaginationInput {
+  limit: Int
+  offset: Int
+}
+
+enum ParkingAvailabilityEnum {
+  NO_PARKING
+  FREE_PARKING
+  PAID_PARKING
+}
+
+union Passport = PasswordPassport | GooglePassport | ApplePassport | TokenPassport | PhoneNumberPassport
+
+enum PassportNameEnum {
+  PASSWORD
+  GOOGLE
+  FACEBOOK
+  APPLE
+  TOKEN
+  PHONE_NUMBER
+}
+
+scalar Password
+
+type PasswordPassport {
+  id: UUID!
+  created_at: DateTime!
+  updated_at: DateTime!
+  name: PassportNameEnum!
+  data: GooglePassportData!
+  user_id: UUID!
+  updated_by: UpdatedBy
+}
+
+type PasswordPassportData {
+  bcrypt: String!
+}
+
+input PasswordPassportInput {
+  email: EmailAddress!
+  password: String!
+}
+
+enum PaymentFailureReason {
+  INSUFFICIENT_FUNDS
+  DEBIT_FAILED
+  OTHER
+}
+
+type PaymentIntent {
+  id: String!
+  client_secret: String!
+  amount: Int!
+  currency: String!
+  status: String!
+  description: String
+}
+
+enum PaymentStatusEnum {
+  PAID
+  OVERPAID
+  UNPAID
+}
+
+type PendingBusinessesExternalContactsAndNetworkInvitationsFeed {
+  nodes: [PendingExternalContactOrNetworkInvitation!]!
+  total: Int!
+}
+
+union PendingExternalContactOrNetworkInvitation = BusinessExternalContact | NetworkInvitation
+
+type PerformanceActivityMetricsExtractResult {
+  extract_url: URL!
+}
+
+scalar PhoneNumber
+
+type PhoneNumberPassport {
+  id: UUID!
+  created_at: DateTime!
+  updated_at: DateTime!
+  name: PassportNameEnum!
+  data: PhoneNumberPassportData!
+  user_id: UUID!
+}
+
+type PhoneNumberPassportData {
+  phone_number: String!
+}
+
+input PhoneNumberPassportInput {
+  email: EmailAddress!
+  phone_number_token: String!
+}
+
+scalar Port
+
+scalar PositiveFloat
+
+scalar PositiveInt
+
+scalar PostalCode
+
+type Pricing {
+  business_mission_price_excl_tax: Int!
+}
+
+type PricingForConnectedTalent {
+  _id: ID!
+  talent_commission_rate_excl_tax: Float
+  talent_commission_rate_incl_tax: Float
+  talent_price_commission_excl_tax: Int!
+  talent_commission_tax_rate: Float!
+  talent_tax_rate: Float!
+  talent_price_commission_incl_tax: Int!
+  talent_income: Int!
+  talent_income_excl_talent_tax: Int
+  talent_income_incl_talent_tax: Int
+  mission_price_incl_tax: Int!
+  business_final_price_incl_tax: Int!
+}
+
+type Product {
+  updated_by: UpdatedBy
+}
+
+enum ProofOfCompanyRequirementStatusEnum {
+  NOT_REQUIRED
+  REQUIRED
+  RECOMMENDED
+}
+
+enum PropositionAnswerEnum {
+  UNANSWERED
+  ACCEPTED
+  REFUSED
+  INTERESTED
+  PARTIALLY_AVAILABLE
+}
+
+enum PropositionPartialAvailabilityAgentStatusEnum {
+  ACCEPTED_KEEP_LOOKING_FOR_TALENT
+  ACCEPTED_STOP_LOOKING_FOR_TALENT
+  REFUSED
+}
+
+type Provider {
+  id: UUID!
+  type: ProviderTypeEnum!
+  status: ProviderStatusEnum!
+  status_reasons: [String!]!
+  bank_account: ProviderBankAccount
+  client_id: UUID!
+  resource_id: String!
+}
+
+type ProviderBankAccount {
+  email: EmailAddress
+  mandate_url: String
+  last_numbers: String
+  sort_code: String
+  account_holder_name: String
+}
+
+enum ProviderDocumentVerificationDetailsEnum {
+  DOCUMENT_CORRUPT
+  DOCUMENT_FAILED_COPY
+  DOCUMENT_FAILED_GREYSCALE
+  DOCUMENT_INCOMPLETE
+  DOCUMENT_NOT_READABLE
+  DOCUMENT_NOT_UPLOADED
+  DOCUMENT_MISSING_BACK
+  DOCUMENT_MISSING_FRONT
+  DOCUMENT_TOO_LARGE
+  DOCUMENT_COUNTRY_NOT_SUPPORTED
+  DOCUMENT_INVALID
+  DOCUMENT_TYPE_NOT_SUPPORTED
+  DOCUMENT_FAILED_OTHER
+  DOCUMENT_NAME_MISMATCH
+  DOCUMENT_DOB_MISMATCH
+  DOCUMENT_ADDRESS_MISMATCH
+  DOCUMENT_ID_NUMBER_MISMATCH
+  DOCUMENT_EXPIRED
+  DOCUMENT_FRAUDULENT
+  DOCUMENT_ID_COUNTRY_NOT_SUPPORTED
+  DOCUMENT_ID_TYPE_NOT_SUPPORTED
+  DOCUMENT_MANIPULATED
+  DOCUMENT_PHOTO_MISMATCH
+  FAILED_KEYED_IDENTITY
+  FAILED_OTHER
+}
+
+input ProviderOwnerAddressInput {
+  street: String!
+  zip: String!
+  city: String!
+  country: String!
+}
+
+input ProviderOwnerInput {
+  email: EmailAddress!
+  name: String!
+  address: ProviderOwnerAddressInput!
+  language: String!
+}
+
+input ProviderPaymentMethodInput {
+  payment_method_id: String!
+}
+
+union ProviderResult = Provider | NotFoundError | UserInputError | ClientsHasNotTheSameProviderError | StripeError
+
+enum ProviderStatusEnum {
+  CHARGEABLE
+  PENDING
+  FAILED
+  CURRENTLY_DUE
+  EVENTUALLY_DUE
+}
+
+enum ProviderTypeEnum {
+  STRIPE_CARD
+  STRIPE_SEPA_DEBIT
+  STRIPE_SEPA_CREDIT_TRANSFER
+  STRIPE_ACCOUNT
+  STRIPE_BACS_DEBIT
+  DIRECT_WIRE
+}
+
+enum PublicDownloadExtractErrorEnum {
+  INVALID_TOKEN
+  EXTRACT_NOT_FOUND
+  EXTRACT_IS_EXPIRED
+  EXTRACT_TYPE_MISMATCHED
+  EXTRACT_NOT_DONE
+}
+
+type PublicDownloadExtractErrorResult {
+  error_key: PublicDownloadExtractErrorEnum!
+}
+
+type PublicDownloadExtractForBusinessLegalDocuments {
+  archive_name: String!
+  size_mb: Float!
+  url: URL!
+  expiration_date: DateTime!
+  number_of_talents: Int!
+  number_of_sites: Int!
+  period_start: Date!
+  period_end: Date!
+  number_of_invoices: Int!
+  number_of_documents: Int!
+  number_of_contracts: Int!
+}
+
+union PublicDownloadExtractForBusinessLegalDocumentsResult = PublicDownloadExtractForBusinessLegalDocuments | PublicDownloadExtractErrorResult
+
+type PublicDownloadExtractForInvoices {
+  archive_name: String!
+  size_mb: Float!
+  url: String!
+  period_start: Date!
+  period_end: Date!
+  number_of_invoices: Int!
+}
+
+union PublicDownloadExtractForInvoicesResult = PublicDownloadExtractForInvoices | PublicDownloadExtractErrorResult
+
+type Query {
+  TalentsInZoneByAddress(address_id: UUID!, job_id: UUID, job_ids: [UUID!]): TalentsInZoneResult!
+  Talent(id: UUID!): TalentResult!
+  ExternalContactUserStatusByPhoneNumberAndSite(phone_number: PhoneNumber!, site_id: UUID!): ExternalContactUserStatusEnum!
+  Agent: Agent
+  AgentsWithAccess(site_ids: [UUID!]!): [AgentWithManagementInfo!]!
+  BusinessConfiguration(id: UUID!): BusinessConfiguration
+  GroupInvitationsWithAccess(site_ids: [UUID!]!): [GroupInvitation!]!
+  EmbeddedMetabaseDashboardsToken(dashboard_nb: Int!): EmbeddedDashboardsResult!
+  PendingNetworkApplications(business_entity_ids: [UUID!]!): [NetworkApplication!]!
+  NetworkInvitationByBusinessEntityIds(business_entity_ids: [UUID!]!, filters: NetworkInvitationFiltersInput, pagination: PaginationInput, sort: [SortInput!], search: String): NetworkInvitationFeed!
+  TalentCalendarEvents(talent_id: UUID!, start_date: Date!, end_date: Date!): TalentCalendarEventsResult!
+  BusinessesNetwork(business_ids: [UUID!]!, pagination: PaginationInput, filters: FilterBusinessNetworkInput, sort: [SortInput!], search: String): BusinessesNetworkFeedResult!
+  BusinessNetworkContact(id: UUID!, business_entity_id: UUID!): BusinessNetworkContact
+  IsContactWithPhoneNumberInSiteNetwork(site_id: UUID!, phone_number: PhoneNumber!): ContactWithPhoneNumberTypeEnum!
+  ExternalContactsWithJobIdCount(site_id: UUID!, job_id: UUID!): ExternalContactsWithJobIdCountResult!
+  SharedBusinessesNetwork(business_ids: [UUID!]!, pagination: PaginationInput, filters: FilterSharedBusinessesNetworkInput, sort: [SortInput!], search: String): SharedBusinessesNetworkFeed!
+  PendingBusinessesExternalContactsAndNetworkInvitations(business_entity_ids: [UUID!]!, pagination: PaginationInput, sort: [SortInput!], search: String): PendingBusinessesExternalContactsAndNetworkInvitationsFeed!
+  Site(id: UUID!): Site
+  InvalidPaymentDetailsAgentSitesWithExemptedMission: [Site!]!
+  IndustriesCategoriesByAddress(address_id: UUID!): [IndustryWithCategories!]!
+  JobsDetailsByAddressIndustryCategory(address_id: UUID!, industry_id: UUID!, category_id: UUID!): [JobDetails!]!
+  AvailableJobsForSites(site_ids: [UUID!]!): [AvailableJobsForSiteResult!]!
+  EstimatedServiceFeesForShortTermMission(mission_id: UUID!): Int!
+  SiteTypologies(group_vertical: GroupVerticalEnum!, iso_country_3: String!): [SiteTypology!]!
+  SiteTypologiesV2(group_vertical: GroupVerticalEnum!, iso_country_3: String!): [SiteTypology!]!
+  AvailableGroupVerticalsForCountry(iso_country_3: String!): [GroupVerticalEnum!]!
+  AvailableGroupVerticalsForCountryV2(iso_country_3: String!): [GroupVerticalEnum!]!
+  PendingDocumentSignatures(sort: [SortInput!], pagination: PaginationInput): DocumentSignaturesFeed!
+  ExtractForBusinessLegalDocuments(site_ids: [UUID!]!, filters: FiltersExtractForBusinessLegalDocumentsInput!, pagination: PaginationInput): ExtractForBusinessLegalDocumentsFeed!
+  PublicDownloadExtractForBusinessLegalDocuments(extract_token: String!): PublicDownloadExtractForBusinessLegalDocumentsResult!
+  PublicDownloadExtractForInvoices(extract_token: String!): PublicDownloadExtractForInvoicesResult!
+  PublicDownloadExtractForBusinessInvoices(extract_token: String!): PublicDownloadExtractForInvoicesResult!
+  InvoicesForList(business_entity_ids: [String!]!, filters: InvoicesForListFilters, pagination: PaginationInput, sort: [SortInput!]): PaginatedInvoiceForAgentList!
+  InvoiceForRendering(invoice_token: String!): InvoiceForRenderingResult!
+  PublicInvoiceForRendering(invoice_token: String!): InvoiceForRenderingResult!
+  UrssafHealthServices(urssaf_site_code: String!): [UrssafHealthService!]!
+  UrssafSites: [UrssafSite!]!
+  MissionFavoritesAndContactsToReach(mission_id: UUID!): [MissionFavoritesAndContactsToReach!]!
+  CeilingStatusBetweenBusinessAndTalent(site_id: UUID!, talent_id: UUID!): CeilingStatusResult
+  TalentMissionRequests(pagination: PaginationInput, sort: [SortInput!]): TalentMissionRequestsFeed!
+  TalentsBoard(filters: TalentsBoardFilters!, pagination: PaginationInput!): TalentsBoardResult!
+  MissionTemplates(business_entity_id: UUID!): [MissionTemplate!]!
+  UpcomingMissionsAndRequestsNeedingValidation(site_ids: [UUID!]!, pagination: PaginationInput, sort: [SortInput!], onlyPendingValidation: Boolean): MissionsOrRequestsFeed!
+  PassedMissionsAndRequestsNeedingValidation(site_ids: [UUID!]!, pagination: PaginationInput): MissionsOrRequestsFeed!
+  Mission(mission_id: UUID!): Mission
+  MissionValidationCriteriaForSite(site_id: UUID!, timezone: Timezone!): MissionValidationCriteriaForSiteResult!
+  MissionValidationCeilingForSite(site_id: UUID!, timezone: Timezone!, slots: [MissionSlotsInput!]): MissionValidationCeilingForSiteResult!
+  SitesMissionsJobs(sites_ids: [UUID!]!): [SitesMissionsJobsResult!]!
+  MetricsForPerformanceActivityV3(input: MetricsForPerformanceActivityInput!): MetricsForPerformanceActivityResultV3!
+  PerformanceActivityMetricsExtract(input: MetricsForPerformanceActivityInput!): PerformanceActivityMetricsExtractResult!
+  StaffedEmployeeMissionsForPeriod(input: StaffedEmployeeMissionsForPeriodInput!, sort: [SortInput!], pagination: PaginationInput): StaffedEmployeeMissionsForPeriodResult!
+  MissionsToReview(sort: [SortInput!], pagination: PaginationInput): MissionsToReviewFeed!
+  MissionsWithContractToGenerate(sort: [SortInput!], pagination: PaginationInput): MissionsFeed!
+  NumberOfMissionsDoneOnIndustryForTalent(industry_id: UUID!, talent_id: UUID!): Int!
+  RegularizationsToReview(pagination: PaginationInput, sort: [SortInput!]): RegularizationsToReviewFeed
+  MissionShortTermContractForm(mission_id: UUID!): MissionShortTermContractFormResult!
+  PublicAvailableApps(mail: String!): [AvailableAppEnum!]!
+  PublicAvailableAppsByUserId(id: UUID!): [AvailableAppEnum!]!
+}
+
+enum QuestionTypeEnum {
+  SOFT_SKILLS
+  HARD_SKILLS
+  HACCPS
+  MACHINE
+}
+
+enum QuestionnaireStateEnum {
+  VALIDATED
+  PENDING
+  FAILED
+}
+
+scalar RGB
+
+scalar RGBA
+
+type RangeDetails {
+  nb_of_days: Int!
+  price: Int!
+}
+
+union RefuseConnectionResult = RefuseConnectionSuccess | NotFoundError | InvalidResourceStateError
+
+type RefuseConnectionSuccess {
+  hash: String!
+  user_id: UUID!
+}
+
+type RegistrantUser {
+  user_id: UUID!
+}
+
+union Regularization = TalentRegularization | AgentRegularization
+
+type RegularizationError {
+  error_code: RegularizationErrorEnum!
+}
+
+enum RegularizationErrorEnum {
+  TOO_SOON
+  TOO_LATE
+}
+
+enum RegularizationStatusEnum {
+  PENDING
+  REFUSED
+  APPROVED
+  CANCELED
+  APPROVED_BY_CODE
+}
+
+interface RegularizationTemplate {
+  id: UUID!
+  created_at: DateTime!
+  updated_at: DateTime!
+  updated_by: UpdatedBy
+  expired_at: DateTime!
+  offer_id: UUID!
+  requester_type: UserTypeEnum!
+  requester_id: UUID!
+  responder_id: UUID
+  current_slot_ids: [UUID!]!
+  new_slot_ids: [UUID!]!
+  status: RegularizationStatusEnum!
+  requester_reason: String
+  responder_reason: String
+  validation_code: String!
+}
+
+type RegularizationsToReviewFeed {
+  nodes: [Regularization!]!
+  total: Int!
+}
+
+scalar RoutingNumber
+
+scalar SESSN
+
+scalar SafeInt
+
+type SatisfactionMetric {
+  rework_rate: Int!
+  average_grade: Float!
+  percentage_of_missions_with_grade: Int!
+}
+
+scalar SemVer
+
+type Session {
+  updated_by: UpdatedBy
+}
+
+enum SessionDeviceTypeEnum {
+  MOBILE_STAFFING_BUSINESS
+  MOBILE_STAFFING_BRIGADER
+  JOB_BOARD
+  ADMIN_PANEL
+  OPENREPLAY
+  INTERNAL
+  CYPRESS
+  NEOB_TALENT
+  NEOB
+}
+
+type SharedBusinessTalentContact {
+  id: UUID!
+  skills: [NetworkInvitationSkill!]!
+  talent: Talent!
+  type: NetworkTypeEnum!
+  group_sites_with_talent_in_network_count: Int!
+  is_in_site_network: Boolean!
+  pending_invitation: NetworkInvitation
+}
+
+type SharedBusinessesNetworkFeed {
+  nodes: [SharedBusinessTalentContact!]!
+  total: Int!
+}
+
+enum ShortTermContractTemplateVariableCategoryEnum {
+  TALENT
+  BUSINESS
+  CONTRACT_AND_MISSION
+  CUSTOM
+}
+
+type ShortTermJobDetails {
+  job_id: UUID!
+  blocked_by_site(site_id: UUID!): Boolean!
+  _id: ID!
+  name: TranslationsDictionary!
+}
+
+enum ShortTermPricingConfigurationMissionStatusEnum {
+  DONE
+  CANCELLED
+}
+
+enum SignatureDocumentTypeEnum {
+  MISSION_SHORT_TERM_CONTRACT
+}
+
+type Site {
+  id: UUID!
+  configuration: BusinessConfiguration
+  entity_own_configuration: BusinessConfiguration
+  group_id: UUID!
+  share_network_with_group: Boolean!
+  name: String!
+  group: Group!
+  parent_ids: [UUID!]!
+  phone_number: PhoneNumber
+  suspended_reason: SiteSuspensionReasonEnum
+  has_unpaid_missions: Boolean!
+  unpaid_missions: [UnpaidMission!]!
+  has_access_to_short_term_jobs: Boolean!
+  associated_billing_data: BusinessBillingDataMapping
+  has_valid_short_term_contract_template: Boolean!
+}
+
+type SiteAddress {
+  _id: ID!
+  id: UUID!
+  site_id: UUID!
+  address_id: UUID!
+  address: Address!
+  default: Boolean!
+  name: String
+  description: String
+  parking_availability: ParkingAvailabilityEnum
+}
+
+union SiteOrDeletedResource = Site | DeletedResource
+
+enum SiteStateEnum {
+  PENDING
+  VALIDATED
+  SUSPENDED
+  REFUSED
+  CLOSED
+}
+
+enum SiteSuspensionReasonEnum {
+  UNPAID_MISSIONS
+  FINANCE_BLOCKER
+  PAYMENT_METHOD_FAILURE
+  INHERITED_FROM_GROUP
+}
+
+type SiteTypology {
+  id: UUID!
+  name: TranslationsDictionary!
+  level: Int!
+  children: [SiteTypology!]!
+  linked_industry_id: UUID
+}
+
+enum SiteTypologyUserTargetEnum {
+  BUSINESS
+  TALENT
+}
+
+type SitesMissionsJobsResult {
+  job_id: UUID!
+  job: Job!
+  _id: ID!
+}
+
+enum SkillsVerificationsQuestionFormatEnum {
+  ONE_ANSWER
+  MULTIPLE_ANSWERS
+}
+
+enum SkillsVerificationsQuestionTypeEnum {
+  SOFT_SKILLS
+  HARD_SKILLS
+  HACCPS
+  MACHINE
+}
+
+enum SkillsVerificationsStatusEnum {
+  NOT_STARTED
+  IN_PROGRESS
+  SUCCEEDED
+  FAILED
+}
+
+type Slot {
+  id: UUID!
+  starts_at: DateTime!
+  ends_at: DateTime!
+  start_date: String!
+  end_date: String!
+  start_time: String!
+  end_time: String!
+  break_minutes: Int!
+  timezone: Timezone!
+}
+
+union SlotDetail = ChangedSlot | ValidatedSlot
+
+type SlotPair {
+  referent_slot: MatchmakingSlot!
+  new_slot: MatchmakingSlot
+}
+
+input SlotPairInput {
+  referent_slot: MatchmakingSlotInput!
+  new_slot: MatchmakingSlotInput
+}
+
+input SortInput {
+  field: String
+  type: SortTypeEnum
+}
+
+enum SortTypeEnum {
+  ASC
+  DESC
+}
+
+type StaffedEmployeeMissionForPeriod {
+  _id: ID!
+  mission_id: UUID!
+  mission: Mission!
+  nb_minutes: Int!
+}
+
+input StaffedEmployeeMissionsForPeriodInput {
+  employee_id: UUID!
+  site_ids: [UUID!]!
+  period_start: Date!
+  period_end: Date!
+}
+
+type StaffedEmployeeMissionsForPeriodResult {
+  total_minutes: Int!
+  nodes: [StaffedEmployeeMissionForPeriod!]!
+  total: Int!
+}
+
+type StripeError {
+  method: String!
+  resource_id: String!
+  message: String!
+}
+
+input SubmitDpaeInput {
+  employer_details: DpaeSubmissionEmployerDetailsInput!
+  employee_details: DpaeSubmissionEmployeeDetailsInput!
+  contract_details: DpaeSubmissionContractDetailsInput!
+}
+
+union SubmitDpaeResult = SubmitDpaeSuccessResult | NotFoundError | InvalidResourceStateError
+
+type SubmitDpaeSuccessResult {
+  success: Boolean!
+}
+
+type SuspensionState {
+  updated_by: UpdatedBy
+}
+
+type SystemUpdatedBy {
+  event_name: String
+  type: String!
+  service: String
+}
+
+type SystemUser {
+  user_id: UUID!
+}
+
+type Tag {
+  id: UUID!
+  name: TranslationsDictionary!
+  category: TagCategoryEnum!
+  updated_by: UpdatedBy
+}
+
+enum TagCategoryEnum {
+  INTERNAL
+  LANGUAGES
+  SPECIALITIES
+  MOBILITY
+}
+
+type Talent {
+  id: UUID!
+  first_name: String!
+  last_name: String!
+  phone_number: PhoneNumber!
+  email: EmailAddress!
+  birth_date: Date
+  profile_picture_key: String
+  profile_picture_url: URL
+  availabilities_visibility_enabled: Boolean!
+  unavailable_until: DateTime
+  address_id: UUID
+  skills: JSON!
+  job_ids: [UUID!]!
+  jobs: [Job!]!
+  is_super_talent: Boolean!
+  presentation: String
+  gender: TalentGenderEnum
+  formatted_skills: [TalentSkill!]!
+  nb_of_sites_that_added_talent_to_favorite_list: Int!
+  has_short_term_job_in_skills: Boolean!
+  has_freelance_job_in_skills: Boolean!
+  social_security_number: String
+  birth_city: String
+  birth_department: String
+  has_valid_proof_of_company: Boolean!
+  can_accept_propositions: Boolean!
+  stats: TalentStats!
+  nb_of_missions_done: Int!
+  rework_rate: Float!
+  average_received_reviews: Float
+  address: Address
+}
+
+type TalentCalendarEvent {
+  _id: ID!
+  starts_at: DateTime!
+  ends_at: DateTime!
+  event_type: EventTypeEnum!
+}
+
+type TalentCalendarEvents {
+  events: [TalentCalendarEvent!]!
+}
+
+enum TalentCalendarEventsErrorEnum {
+  INVALID_DATE_RANGE
+  BUSINESS_DID_NOT_WORKED_WITH_TALENT
+}
+
+union TalentCalendarEventsResult = TalentCalendarEvents | TalentCalendarEventsResultError | NotFoundError
+
+type TalentCalendarEventsResultError {
+  error_key: TalentCalendarEventsErrorEnum!
+}
+
+enum TalentGenderEnum {
+  MALE
+  FEMALE
+  OTHER
+}
+
+type TalentIdentityVerification {
+  frequency: TalentIdentityVerificationFrequencyEnum!
+  agents_to_notify: TalentIdentityVerificationNotifiedAgents!
+}
+
+type TalentIdentityVerificationAllSiteAgentsNotified {
+  site_id: UUID!
+  agents: [AgentOrDeletedResource!]!
+}
+
+enum TalentIdentityVerificationFrequencyEnum {
+  ALL_MISSIONS
+  FIRST_MISSION
+}
+
+input TalentIdentityVerificationInput {
+  frequency: TalentIdentityVerificationFrequencyEnum!
+  notified_agents_type: TalentIdentityVerificationNotifiedAgentsEnum!
+  agent_ids_to_notify: [UUID!]
+}
+
+union TalentIdentityVerificationNotifiedAgents = TalentIdentityVerificationAllSiteAgentsNotified | TalentIdentityVerificationSelectedSiteAgentsNotified | TalentIdentityVerificationNotifiedAgentsNonApplicable
+
+enum TalentIdentityVerificationNotifiedAgentsEnum {
+  ALL_SITE_AGENTS
+  SELECTED_AGENTS
+}
+
+type TalentIdentityVerificationNotifiedAgentsNonApplicable {
+  business_entity_id: UUID!
+  business_entity_type: BusinessEntityTypeEnum!
+}
+
+type TalentIdentityVerificationSelectedSiteAgentsNotified {
+  agents_ids_to_notify: [UUID!]!
+  agents: [AgentOrDeletedResource!]!
+}
+
+enum TalentIdentityVerificationStatusEnum {
+  PENDING
+  SUCCESS
+  FAILED
+  EXPIRED
+}
+
+type TalentIdentityVerificationSubmissionTimerange {
+  start: DateTime!
+  end: DateTime!
+}
+
+type TalentMissionRequest {
+  id: UUID!
+  brigader_id: UUID!
+  talent: TalentOrDeletedResource!
+  agent_id: UUID!
+  agent: AgentOrDeletedResource!
+  business_id: UUID!
+  site: SiteOrDeletedResource
+  job_id: UUID!
+  job: Job!
+  starts_at: DateTime!
+  ends_at: DateTime!
+  status: BrigaderOfferRequestStatusEnum!
+  total_worked_minutes: Int!
+  price: Int!
+  currency: String!
+  validation_mechanism: MissionValidationMechanismEnum
+  validation_processed_at: DateTime
+  pricing: Pricing!
+}
+
+type TalentMissionRequestsFeed {
+  nodes: [TalentMissionRequest!]!
+  total: Int!
+}
+
+type TalentMissionsStats {
+  _id: ID!
+  talent_id: UUID!
+  industry_id: UUID
+  industry: Industry
+  job_id: UUID
+  job: Job
+  count: Int!
+}
+
+union TalentOrDeletedResource = Talent | DeletedResource
+
+type TalentRegularization implements RegularizationTemplate {
+  id: UUID!
+  offer_id: UUID!
+  mission: Mission!
+  created_at: DateTime!
+  updated_at: DateTime!
+  updated_by: UpdatedBy
+  expired_at: DateTime!
+  requester_type: UserTypeEnum!
+  requester_id: UUID!
+  responder_id: UUID
+  current_slot_ids: [UUID!]!
+  current_slots: [Slot!]!
+  new_slot_ids: [UUID!]!
+  new_slots: [Slot!]!
+  status: RegularizationStatusEnum!
+  requester_reason: String
+  responder_reason: String
+  difference_in_minutes: Int!
+  impacted_slots: [SlotDetail!]!
+  validation_code: String!
+}
+
+union TalentResult = Talent | NotFoundError
+
+type TalentSkill {
+  _id: ID!
+  talent_id: UUID!
+  job_id: UUID!
+  job: Job!
+  industry_ids: [UUID!]!
+  industries: [Industry!]!
+  tag_ids: [UUID!]!
+  tags: [Tag!]!
+  contract_type: ContractTypeEnum!
+}
+
+type TalentStats {
+  total_worked_missions: Int!
+  mission_stats_per_industry: [TalentMissionsStats!]!
+  mission_stats_per_job: [TalentMissionsStats!]!
+}
+
+type TalentUser {
+  user_id: UUID!
+}
+
+input TalentsBoardFilters {
+  site_address_id: UUID!
+  job_ids: [UUID]
+  industry_id: UUID
+  tag_ids: [UUID!]
+}
+
+union TalentsBoardResult = NotFoundError | TalentsForTalentsBoard
+
+type TalentsForTalentsBoard {
+  talent_ids: [UUID!]!
+  talents: [TalentOrDeletedResource!]!
+  _id: ID!
+  total: Int!
+}
+
+type TalentsInZone {
+  _id: ID!
+  address_id: UUID!
+  zone: Zone!
+  talents: [Talent!]!
+  count: Int!
+}
+
+union TalentsInZoneResult = TalentsInZone | NotFoundError
+
+scalar Time
+
+type TimeSlot {
+  start_time: String!
+  end_time: String!
+  break_minutes: Int!
+}
+
+input TimeSlotInput {
+  start_time: String!
+  end_time: String!
+  break_minutes: Int!
+}
+
+scalar TimeZone
+
+scalar Timestamp
+
+scalar Timezone
+
+type TokenPassport {
+  id: UUID!
+  created_at: DateTime!
+  updated_at: DateTime!
+  name: PassportNameEnum!
+  data: TokenPassportData!
+  user_id: UUID!
+}
+
+input TokenPassportCreationInput {
+  email: EmailAddress!
+  access_token: String!
+}
+
+type TokenPassportData {
+  access_token: String
+}
+
+input TokenPassportInput {
+  access_token: String!
+}
+
+scalar TranslationsDictionary
+
+enum TransportationTypeEnum {
+  WALKING
+  CYCLING
+  PUBLIC_TRANSPORT
+  DRIVING
+}
+
+type TravelTime {
+  preferred: TravelTimeByTransportation!
+  transportations: [TravelTimeByTransportation!]!
+  preferred_departure: TravelTimeByTransportation
+  transportations_departure: [TravelTimeByTransportation!]
+}
+
+type TravelTimeByTransportation {
+  mode: TransportationTypeEnum!
+  time: Int!
+  distance: Int
+}
+
+enum TravelTimeJourneyEnum {
+  ARRIVAL
+  DEPARTURE
+  BOTH
+}
+
+type UKBankDetails {
+  bank_name: String
+  sort_code: String!
+  account_number: String!
+}
+
+scalar URL
+
+scalar USCurrency
+
+input UTMInput {
+  source: String
+  medium: String
+  campaign: String
+}
+
+scalar UUID
+
+type UnavailabilitySlot {
+  updated_by: UpdatedBy
+}
+
+type UncompletedBrigader {
+  updated_by: UpdatedBy
+}
+
+type UnknownTargetError {
+  id: UUID!
+}
+
+type UnpaidMission {
+  _id: ID!
+  payment_id: UUID!
+  site_id: UUID!
+  mission: Mission!
+  amount: Int!
+  payment_failure_reason: PaymentFailureReason!
+}
+
+scalar UnsignedFloat
+
+scalar UnsignedInt
+
+union UpdateTalentIdentityVerificationStatusResult = Mission | NotFoundError | InvalidResourceStateError
+
+union UpdatedBy = SystemUpdatedBy | AdministratorUpdatedBy | BrigaderUpdatedBy | CandidateUpdatedBy | AgentUpdatedBy
+
+scalar Upload
+
+input UpsertBusinessConfigurationInput {
+  business_entity_id: UUID!
+  block_jobs_ids: [UUID!]
+  can_modify_mission_expiration_delay: Boolean
+  custom_form_url_to_fill_before_mission_acceptance: String
+  needs_talents_to_attest_not_employee: Boolean
+  talent_identity_verification: TalentIdentityVerificationInput
+}
+
+union UpsertBusinessConfigurationResult = BusinessConfiguration | UserInputError | NotFoundError
+
+type UrssafHealthService {
+  id: UUID!
+  code: String!
+  label: String!
+  urssaf_site_code: String!
+}
+
+type UrssafSite {
+  id: UUID!
+  code: String!
+  name: String!
+}
+
+type User {
+  updated_by: UpdatedBy
+  _id: ID!
+  id: UUID!
+  created_at: DateTime!
+  updated_at: DateTime!
+  email: EmailAddress!
+  type: UserTypeEnum!
+  email_validated: Boolean!
+  language: String
+}
+
+enum UserConsentAgreementEnum {
+  BUSINESS_TERMS_OF_SERVICE
+  BUSINESS_PRIVACY_POLICY
+  TALENT_TERMS_OF_SERVICE
+  TALENT_PRIVACY_POLICY
+  TALENT_STRIPE_TERMS_OF_SERVICE
+  TALENT_STRIPE_CONNECT_TERMS_OF_SERVICE
+}
+
+type UserInputError implements BaseError {
+  type: ErrorTypeEnum!
+  properties: [UserInputErrorProperty!]!
+  message: String
+}
+
+type UserInputErrorProperty {
+  field_name: String!
+  error: FieldErrorEnum!
+}
+
+enum UserTypeEnum {
+  BRIGADER
+  AGENT
+  ADMINISTRATOR
+  JOB_SEEKER
+  CANDIDATE
+  EXTERNAL_AGENT
+  REGISTRANT
+}
+
+scalar UtcOffset
+
+type ValidatedSlot {
+  id: UUID!
+  valid: Boolean!
+}
+
+union ValidationResult = Mission | NotFoundError | InvalidResourceStateError
+
+enum VatSubjectionEnum {
+  UNKNOWN
+  SUBJECT
+  NONSUBJECT
+}
+
+enum VerticalEnum {
+  HOSPITALITY
+  HEALTHCARE
+  OTHER
+}
+
+scalar Void
+
+type Voucher {
+  id: UUID!
+  amount: Int!
+  currency: String!
+}
+
+type Zone {
+  id: UUID!
+  name: String!
+  group_name: String!
+  updated_by: UpdatedBy
+}
+
+enum ZoneTagEnum {
+  BRIGADER
+  BUSINESS
+}
+
+input createRegularizationInput {
+  offer_id: UUID!
+  reason: String
+  impacted_slots: [ImpactedSlots!]!
+}

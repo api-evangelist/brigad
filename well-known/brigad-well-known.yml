@@ -1,0 +1,38 @@
+generated: '2026-08-17'
+method: probed
+source: live probes of /.well-known/* on every Brigad host
+note: >-
+  No Brigad-owned /.well-known discovery document was found. www.brigad.co /
+  brigad.co (Webflow) return a 404 catch-all for every path; app.hsp.brigad.co
+  answers 200 with the SPA HTML shell for every path (not a real document, so
+  not counted). The only 200 /.well-known/security.txt is served on the
+  help.brigad.co help center, and it is Intercom's third-party boilerplate
+  (Canonical: app.intercom.com/.well-known/security.txt, Contact:
+  bugcrowd.com/intercom) — NOT Brigad's own security policy, so no SecurityTxt
+  or WellKnown pointer is emitted. Recorded absence is valid data.
+hosts:
+- host: https://www.brigad.co
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}
+- host: https://app.hsp.brigad.co
+  note: SPA catch-all returns 200 with HTML shell for every path; treated as miss.
+  documents:
+  - {path: /.well-known/security.txt, status: 200, content_type: 'text/html', spa_shell: true}
+  - {path: /.well-known/openid-configuration, status: 200, content_type: 'text/html', spa_shell: true}
+  - {path: /.well-known/oauth-authorization-server, status: 200, content_type: 'text/html', spa_shell: true}
+  - {path: /.well-known/agent-card.json, status: 200, content_type: 'text/html', spa_shell: true}
+  - {path: /.well-known/agent.json, status: 200, content_type: 'text/html', spa_shell: true}
+- host: https://help.brigad.co
+  note: Intercom-hosted help center; security.txt is Intercom third-party boilerplate.
+  documents:
+  - {path: /.well-known/security.txt, status: 200, content_type: 'text/plain', owner: intercom-third-party}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}

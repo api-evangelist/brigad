@@ -1,0 +1,12 @@
+generated: '2026-08-17'
+method: searched
+source: https://www.brigad.co/en-gb/business-service-fees
+plan_count: 0
+note: >-
+  Brigad has no API/developer plans — it publishes no developer program. The
+  only public pricing is marketplace service fees for businesses using the
+  staffing platform (a percentage service fee on missions, plus the talent-side
+  service fee), not an API pricing tier. Recorded as plan_count 0 for the API
+  surface; the marketplace fee page is linked as the Pricing property in
+  apis.yml.
+plans: []

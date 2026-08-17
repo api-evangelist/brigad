@@ -1,0 +1,29 @@
+generated: '2026-08-17'
+method: derived
+source: graphql/brigad-talent.graphql, graphql/brigad-agent.graphql, graphql/brigad-legacy.graphql
+note: >-
+  Brigad publishes no auth documentation (no developer program). This profile is
+  derived from observed behaviour of the first-party GraphQL routers. Anonymous
+  __schema introspection is OPEN on all three routers, but data queries and every
+  mutation require an authenticated end-user session established by the Brigad web
+  app (app.hsp.brigad.co) / mobile apps. No OpenAPI securitySchemes exist to run
+  derive-authentication.py against; no OAuth authorization-server / OIDC discovery
+  document is served (see well-known/brigad-well-known.yml). Not a third-party
+  developer credential surface.
+summary:
+  types: [bearer-session]
+  api_key_in: []
+  oauth2_flows: []
+  introspection: open-anonymous
+schemes:
+- name: BrigadUserSession
+  type: http
+  scheme: bearer
+  description: >-
+    End-user session/bearer token minted by the Brigad app login flow, sent to
+    the GraphQL routers. No public client-credentials or API-key path is
+    documented or offered to third parties.
+  sources:
+  - graphql/brigad-talent.graphql
+  - graphql/brigad-agent.graphql
+  - graphql/brigad-legacy.graphql

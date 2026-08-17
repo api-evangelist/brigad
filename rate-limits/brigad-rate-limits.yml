@@ -1,0 +1,11 @@
+generated: '2026-08-17'
+method: searched
+source: https://help.brigad.co/en/, graphql/ (introspection)
+limit_count: 0
+note: >-
+  No rate limits are documented — Brigad publishes no developer/API docs. The
+  first-party GraphQL routers return no RateLimit-* / X-RateLimit-* / Retry-After
+  headers on anonymous introspection requests, and no limit is stated anywhere
+  public. Recorded as an honest zero; a real limit likely exists server-side but
+  is not observable or documented.
+limits: []

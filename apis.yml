@@ -11,9 +11,12 @@ description: >-
   operates in France and the United Kingdom, has supported over 12,000
   businesses and 23,000 independent professionals, and completed more than
   300,000 missions. It is backed by Balderton Capital, Wendel, Serena and
-  Square, having raised roughly €50 million to date. Brigad exposes no public
-  developer API; this profile captures its company identity and public web
-  properties for the API Evangelist network.
+  Square, having raised roughly €50 million to date. Brigad publishes no
+  documented public developer API or developer program, but its web app is
+  powered by first-party GraphQL routers on brigad.cloud (talent, business/agent
+  and legacy schemas) whose anonymous introspection is open; those live SDLs are
+  captured here as an undocumented internal contract, alongside the company
+  identity and public web properties tracked for the API Evangelist network.
 url: https://raw.githubusercontent.com/api-evangelist/brigad/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
@@ -35,7 +38,7 @@ accessModel:
 image: https://cdn.prod.website-files.com/650bff9b13318f3181a5cfbc/658043e5f20fc2fc6360d636_opengraph%20-%20EN.webp
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-18'
+modified: '2026-08-17'
 tags:
 - Company
 - Staffing
@@ -45,7 +48,42 @@ tags:
 - Gig Economy
 - Freelance
 - Workforce
-apis: []
+apis:
+- name: Brigad GraphQL (Talent app)
+  description: >-
+    First-party GraphQL router backing the Brigad talent (freelancer) app —
+    talents, propositions/missions, onboarding, experiences, availabilities and
+    billing. Endpoint is hardcoded in Brigad's own web SPA (app.hsp.brigad.co);
+    anonymous introspection is open. Undocumented internal app backend, not a
+    published developer API.
+  humanURL: https://app.hsp.brigad.co/
+  baseURL: https://brigadhsp-router-talent-brigadhsp-prod.plat.euw1.prod.brigad.cloud/graphql
+  properties:
+  - type: GraphQL
+    url: graphql/brigad-talent.graphql
+- name: Brigad GraphQL (Business app)
+  description: >-
+    First-party GraphQL router backing the Brigad business/agent app —
+    businesses, sites, missions, mission templates, network/contacts,
+    invoices and payments. Endpoint is hardcoded in Brigad's own web SPA;
+    anonymous introspection is open. Undocumented internal app backend, not a
+    published developer API.
+  humanURL: https://app.hsp.brigad.co/
+  baseURL: https://brigadhsp-router-agent-brigadhsp-prod.plat.euw1.prod.brigad.cloud/graphql
+  properties:
+  - type: GraphQL
+    url: graphql/brigad-agent.graphql
+- name: Brigad GraphQL (Legacy monolith)
+  description: >-
+    First-party GraphQL router exposing Brigad's legacy monolith schema
+    (382 queries, 501 mutations spanning both talent and business domains).
+    Anonymous introspection is open. Undocumented internal app backend, not a
+    published developer API.
+  humanURL: https://app.hsp.brigad.co/
+  baseURL: https://brigadhsp-router-legacy-brigadhsp-prod.plat.euw1.prod.brigad.cloud/graphql
+  properties:
+  - type: GraphQL
+    url: graphql/brigad-legacy.graphql
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -70,8 +108,28 @@ common:
   url: https://www.brigad.co/en-gb/legal/privacy-policy
 - type: DomainSecurity
   url: security/brigad-domain-security.yml
+- type: GitHubOrganization
+  url: https://github.com/Brigad
+- type: LLMsTxt
+  url: llms/brigad-llms.txt
+- type: Authentication
+  url: authentication/brigad-authentication.yml
+- type: Conventions
+  url: conventions/brigad-conventions.yml
+- type: DataModel
+  url: data-model/brigad-data-model.yml
+- type: MCPServer
+  url: mcp/brigad-mcp.yml
+- type: RateLimits
+  url: rate-limits/brigad-rate-limits.yml
+- type: Plans
+  url: plans/brigad-plans-pricing.yml
 x-enrichment:
-  date: '2026-07-19'
-  status: backfilled
+  date: '2026-08-17'
+  status: enriched
+  artifacts_added: 9
   pass: local-v1
-  note: backfilled from .gitignore signal + verified work evidence
+  note: >-
+    Contract discovery found Brigad's first-party GraphQL routers (talent,
+    business/agent, legacy) on brigad.cloud with open anonymous introspection;
+    SDLs captured verbatim. Prior profile wrongly said "no public developer API".
